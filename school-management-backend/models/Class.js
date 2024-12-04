@@ -31,10 +31,18 @@ const classSchema = new mongoose.Schema({
     min: 100,
     max: 1000,
   },
-  assignedClass: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Student",
+  maxStudents: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 40,
   },
+  studentList: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Student",
+    },
+  ],
 });
 
 const Class = mongoose.model("Class", classSchema);
