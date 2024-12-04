@@ -1,7 +1,11 @@
 const express = require("express");
+const app = express();
 const dotenv = require("dotenv");
 const cors = require("cors");
 const connectDB = require("./config/database");
+const classRoutes = require("./routes/classRoutes");
+const teacherRoutes = require("./routes/teacherRoutes");
+const studentRoutes = require("./routes/studentRoutes");
 
 // Load environment variables
 dotenv.config();
@@ -9,19 +13,19 @@ dotenv.config();
 // Connect to the database
 connectDB();
 
-const app = express();
-
 //middleware
 app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/api/classes", require("./routes/classRoutes"));
-app.use("/api/teaxhers", require("./routes/teacherRoutes"));
-app.use("/api/students", require("./routes/studentRoutes"));
+app.use("/api/classes", classRoutes);
+app.use("/api/teachers", teacherRoutes);
+app.use("/api/students", studentRoutes);
 
 //Error Handling Middleware
-app.use(require("./middlewares/errorHandler"));
+app.use((err, req, res, next) => {
+  res.status(err.status || 500).json({ message: err.message });
+});
 
 //Start server
 const PORT = process.env.PORT || 3000;
