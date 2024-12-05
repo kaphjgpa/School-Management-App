@@ -1,7 +1,21 @@
 const mongoose = require("mongoose");
 
 const studentSchema = new mongoose.Schema({
-  studentName: {
+  userName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 255,
+  },
+  studentFirstName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 255,
+  },
+  studentLastName: {
     type: String,
     required: true,
     trim: true,
@@ -15,7 +29,7 @@ const studentSchema = new mongoose.Schema({
     max: 12,
   },
   dateOfBirth: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
     minlength: 3,
@@ -25,8 +39,9 @@ const studentSchema = new mongoose.Schema({
     type: Number,
     required: true,
     trim: true,
-    min: 100,
-    max: 1000,
+    minlength: [10, "Contact number must be at least 10 digits"],
+    maxlength: [10, "Contact number must be at most 10 digits"],
+    match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
   },
   feesPaid: {
     type: Number,
@@ -34,6 +49,13 @@ const studentSchema = new mongoose.Schema({
     trim: true,
     min: 10000,
     max: 100000,
+  },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 8,
+    maxlength: 1000,
   },
   assignedClass: {
     type: mongoose.Schema.Types.ObjectId,

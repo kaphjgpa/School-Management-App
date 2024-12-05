@@ -1,12 +1,34 @@
 const mongoose = require("mongoose");
 
 const teacherSchema = new mongoose.Schema({
-  teachername: {
+  userName: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 50,
+  },
+  teacherFirstName: {
     type: String,
     required: true,
     trim: true,
     minlength: 3,
     maxlength: 255,
+  },
+  teacherLastName: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 255,
+  },
+  password: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 6,
+    maxlength: 1000,
   },
   gender: {
     type: String,
@@ -15,18 +37,19 @@ const teacherSchema = new mongoose.Schema({
     max: 12,
   },
   dateOfBirth: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
     minlength: 3,
     maxlength: 255,
   },
   contactNumber: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
-    min: 100,
-    max: 1000,
+    minlength: [10, "Contact number must be at least 10 digits"],
+    maxlength: [10, "Contact number must be at most 10 digits"],
+    match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
   },
   salary: {
     type: Number,

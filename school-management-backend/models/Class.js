@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const classSchema = new mongoose.Schema({
-  classname: {
+  className: {
     type: String,
     required: true,
     unique: true,
@@ -10,13 +10,21 @@ const classSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
+  startTime: {
+    type: Date,
+    required: true,
+  },
+  endTime: {
+    type: Date,
+    required: true,
+  },
   year: {
     type: Number,
     required: true,
-    min: 1,
-    max: 12,
+    min: 2024,
+    max: 2030,
   },
-  teacher: {
+  teacherName: {
     type: String,
     required: true,
     trim: true,
@@ -24,12 +32,12 @@ const classSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
-  studentfees: {
+  studentFees: {
     type: Number,
     required: true,
     trim: true,
-    min: 100,
-    max: 1000,
+    min: 1000,
+    max: 100000,
   },
   maxStudents: {
     type: Number,
