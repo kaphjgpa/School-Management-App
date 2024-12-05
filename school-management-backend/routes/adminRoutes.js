@@ -69,7 +69,7 @@ const signinBody = zod.object({
   userName: zod.string().email(),
   password: zod.string().min(6),
 });
-
+//--------------------------------------------------------------------------------------------------------------------
 // Signin Route
 router.post("/signin", async (req, res) => {
   try {
@@ -116,6 +116,8 @@ router.post("/signin", async (req, res) => {
     });
   }
 });
+
+//------------------------------------------------------------------------------------------
 
 // Updating the Admin Details...
 // Validate the Schema
@@ -180,6 +182,7 @@ router.put("/update-details", async (req, res) => {
     });
   }
 });
+//------------------------------------------------------------------------------------------------
 
 // Mount Class here because Admin can only create classes
 // Zod schema for request validation
@@ -235,6 +238,72 @@ router.post("/createclass", async (req, res) => {
     console.error("Error creating class:", error.message);
     res.status(500).json({
       message: "Failed to create class",
+      error: error.message,
+    });
+  }
+});
+
+//------------------------------------------------------------------------------------------------
+
+// Updating the Class Details...
+// Validate the Schema
+const updateClass = zod.object({
+  year: zod.number().optional(),
+  studentFees: zod.number().optional(),
+  teacherName: zod.string().optional(),
+});
+
+router.put("/update-class", async (req, res) => {
+  try {
+    // Validate the request body
+    const validation = updateClass.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({
+        message: "Invalid input data",
+        errors: validation.error.errors,
+      });
+    }
+
+    // Authenticate the request (using JWT)
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    // Use the className (or other unique field) from the request body to identify the admin and Updating the classes
+    const { className } = req.body;
+    if (!className) {
+      return res
+        .status(400)
+        .json({ message: "className is required for updating details" });
+    }
+
+    // Find and update the class
+    const updatedClass = await Class.findOneAndUpdate(
+      { className }, // Find admin by className
+      { $set: req.body }, // Update with the fields in the request body
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedClass) {
+      return res.status(404).json({ message: "Class not found" });
+    }
+
+    res.status(200).json({
+      message: "Class details updated successfully",
+      admin: updatedClass,
+    });
+  } catch (error) {
+    console.error("Error during update:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
       error: error.message,
     });
   }
