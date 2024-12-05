@@ -187,7 +187,7 @@ router.put("/update-details", async (req, res) => {
 // Mount Class here because Admin can only create classes
 // Zod schema for request validation
 const addClassBody = zod.object({
-  className: zod.number(), // Adding validation for length
+  className: zod.string(), // Adding validation for length
   startTime: zod.number().positive(), // Ensuring time is positive
   endTime: zod.number().positive(),
   teacherName: zod.string().min(3).max(255), // Corrected key to match the schema
@@ -302,6 +302,49 @@ router.put("/update-class", async (req, res) => {
     });
   } catch (error) {
     console.error("Error during update:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+//--------------------------------------------------------------------------------------------------------------------
+
+//This is the search logic behind classes
+router.get("/search-class", async (req, res) => {
+  try {
+    const filter = req.query.filter || ""; // Default to an empty string
+
+    // Search with regex for className or teacherName
+    const classes = await Class.find({
+      $or: [
+        {
+          className: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          teacherName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+      ],
+    });
+
+    // Respond with formatted data
+    res.json({
+      user: classes.map((classItem) => ({
+        className: classItem.className,
+        teacherName: classItem.teacherName,
+        studentFees: classItem.studentFees,
+        // _id: classItem._id,
+      })),
+    });
+  } catch (error) {
+    console.error("Error during search:", error.message);
     res.status(500).json({
       message: "Internal server error",
       error: error.message,

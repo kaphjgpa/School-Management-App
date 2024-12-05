@@ -13,8 +13,9 @@ const signupBody = zod.object({
   gender: zod.string(),
   dateOfBirth: zod.string(),
   feesPaid: zod.number().min(5),
-  contactNumber: zod.string().min(10),
+  contactNumber: zod.number().min(10),
   password: zod.string().min(8, "Password must be at least 8 characters long"),
+  class: zod.number(),
 });
 
 // Signup Route
@@ -46,6 +47,7 @@ router.post("/signup", async (req, res) => {
       studentLastName: req.body.studentLastName,
       gender: req.body.gender,
       dateOfBirth: req.body.dateOfBirth,
+      class: req.body.class,
       contactNumber: req.body.contactNumber,
       feesPaid: req.body.feesPaid,
       password: req.body.password, // You should hash the password (see notes)
@@ -76,6 +78,8 @@ const signinBody = zod.object({
   userName: zod.string().email(),
   password: zod.string().min(8),
 });
+
+//--------------------------------------------------------------------------------------------------------------------
 
 // Signin Route
 router.post("/signin", async (req, res) => {
@@ -123,14 +127,16 @@ router.post("/signin", async (req, res) => {
     });
   }
 });
+//--------------------------------------------------------------------------------------------------------------------
 
 // Updating the Student Details...
 // Validate the Schema
 const updateBody = zod.object({
-  contactNumber: zod.string().optional(),
+  contactNumber: zod.number().optional(),
   password: zod.string().optional(),
   feesPaid: zod.number().optional(),
   studentLastName: zod.string().optional(),
+  class: zod.number().optional(),
 });
 
 router.put("/update-details", async (req, res) => {
