@@ -132,8 +132,6 @@ const updateBody = zod.object({
   password: zod.string().min(6).optional(),
 });
 
-// Update Route
-// Update Route without ":id"
 router.put("/update-details", async (req, res) => {
   try {
     // Validate the request body
