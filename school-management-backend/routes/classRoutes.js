@@ -6,7 +6,8 @@ const { Class } = require("../models/Class");
 // Zod schema for request validation
 const addClassBody = zod.object({
   className: zod.string().min(3).max(255), // Adding validation for length
-  time: zod.number().positive(), // Ensuring time is positive
+  startTime: zod.number().positive(), // Ensuring time is positive
+  endTime: zod.number().positive(),
   teacherName: zod.string().min(3).max(255), // Corrected key to match the schema
   maxStudents: zod.number().int().positive(), // Ensure it's a positive integer
   studentFees: zod.number().positive(), // Corrected casing to match the schema
@@ -39,7 +40,8 @@ router.post("/createclass", async (req, res) => {
     // Create the new class
     const createClass = await Class.create({
       classname: req.body.className.toLowerCase(), // Ensure consistent casing
-      time: req.body.time,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime, // Corrected key to match the schema
       teacherName: req.body.teacherName, // Adjusted key to match the schema
       maxStudents: req.body.maxStudents,
       studentfees: req.body.studentFees, // Adjusted casing to match the schema

@@ -18,12 +18,6 @@ const classSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  year: {
-    type: Number,
-    required: true,
-    min: 2024,
-    max: 2030,
-  },
   teacherName: {
     type: String,
     required: true,
@@ -36,7 +30,7 @@ const classSchema = new mongoose.Schema({
     type: Number,
     required: true,
     trim: true,
-    min: 1000,
+    min: 10000,
     max: 100000,
   },
   maxStudents: {
@@ -44,6 +38,12 @@ const classSchema = new mongoose.Schema({
     required: true,
     min: 1,
     max: 40,
+  },
+  year: {
+    type: Number,
+    required: true,
+    min: 2024,
+    max: 2030,
   },
   studentList: [
     {
