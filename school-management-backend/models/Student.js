@@ -35,6 +35,14 @@ const studentSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
+  class: {
+    type: Number,
+    required: true,
+    trim: true,
+    minlength: [1, "Class name must be at least 1 digits"],
+    maxlength: [2, "Class name must be at most 2 digits"],
+    match: [/^\d{10}$/, "Class name must be a valid 1-12th"], // Regex for validation
+  },
   contactNumber: {
     type: Number,
     required: true,

@@ -118,12 +118,12 @@ router.post("/signin", async (req, res) => {
 // Mount Class here because Admin can only create classes
 // Zod schema for request validation
 const addClassBody = zod.object({
-  className: zod.string().min(3).max(255), // Adding validation for length
+  className: zod.number(), // Adding validation for length
   startTime: zod.number().positive(), // Ensuring time is positive
   endTime: zod.number().positive(),
   teacherName: zod.string().min(3).max(255), // Corrected key to match the schema
   maxStudents: zod.number().int().positive(), // Ensure it's a positive integer
-  studentFees: zod.number().positive(), // Corrected casing to match the schema
+  studentFees: zod.number().int().positive(), // Corrected casing to match the schema
   year: zod.number().int().min(2024).max(2030), // Added range validation for year
 });
 
@@ -142,7 +142,7 @@ router.post("/createclass", async (req, res) => {
 
     // Check if the class already exists
     const existingClass = await Class.findOne({
-      classname: className.toLowerCase(),
+      classname: className,
     });
     if (existingClass) {
       return res.status(409).json({
@@ -152,7 +152,7 @@ router.post("/createclass", async (req, res) => {
 
     // Create the new class
     const createClass = await Class.create({
-      className: req.body.className.toLowerCase(), // Ensure consistent casing
+      className: req.body.className, // Ensure consistent casing
       startTime: req.body.startTime,
       endTime: req.body.endTime, // Corrected key to match the schema
       teacherName: req.body.teacherName, // Adjusted key to match the schema

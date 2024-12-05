@@ -124,4 +124,69 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+// Updating the Student Details...
+// Validate the Schema
+const updateBody = zod.object({
+  contactNumber: zod.string().optional(),
+  password: zod.string().optional(),
+  feesPaid: zod.number().optional(),
+  studentLastName: zod.string().optional(),
+});
+
+router.put("/update-details", async (req, res) => {
+  try {
+    // Validate the request body
+    const validation = updateBody.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({
+        message: "Invalid input data",
+        errors: validation.error.errors,
+      });
+    }
+
+    // Authenticate the request (using JWT)
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    // Use the userName (or other unique field) from the request body to identify the student
+    const { userName } = req.body;
+    if (!userName) {
+      return res
+        .status(400)
+        .json({ message: "userName is required for updating details" });
+    }
+
+    // Find and update the student
+    const updatedStudent = await Student.findOneAndUpdate(
+      { userName }, // Find student by userName
+      { $set: req.body }, // Update with the fields in the request body
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedStudent) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    res.status(200).json({
+      message: "Student details updated successfully",
+      student: updatedStudent,
+    });
+  } catch (error) {
+    console.error("Error during update:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;

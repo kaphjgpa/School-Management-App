@@ -2,13 +2,11 @@ const mongoose = require("mongoose");
 
 const classSchema = new mongoose.Schema({
   className: {
-    type: String,
+    type: Number,
     required: true,
-    unique: true,
-    trim: true,
-    lowercase: true,
-    minlength: 3,
-    maxlength: 255,
+    minlength: [1, "Class name must be at least 1 digits"],
+    maxlength: [2, "Class name must be at most 2 digits"],
+    match: [/^\d{10}$/, "Class name must be a valid 1-12th"], // Regex for validation
   },
   startTime: {
     type: Date,

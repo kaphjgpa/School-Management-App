@@ -124,4 +124,70 @@ router.post("/signin", async (req, res) => {
   }
 });
 
+// Updating the Teacher Details...
+// Update Validation Schema
+const updateBody = zod.object({
+  teacherLastName: zod.string().optional(),
+  contactNumber: zod.string().optional(),
+  password: zod.string().min(6).optional(),
+});
+
+// Update Route
+// Update Route without ":id"
+router.put("/update-details", async (req, res) => {
+  try {
+    // Validate the request body
+    const validation = updateBody.safeParse(req.body);
+    if (!validation.success) {
+      return res.status(400).json({
+        message: "Invalid input data",
+        errors: validation.error.errors,
+      });
+    }
+
+    // Authenticate the request (using JWT)
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized access" });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET);
+    } catch (err) {
+      return res.status(401).json({ message: "Invalid or expired token" });
+    }
+
+    // Use the userName (or other unique field) from the request body to identify the teacher
+    const { userName } = req.body;
+    if (!userName) {
+      return res
+        .status(400)
+        .json({ message: "userName is required for updating details" });
+    }
+
+    // Find and update the teacher
+    const updatedTeacher = await Teacher.findOneAndUpdate(
+      { userName }, // Find teacher by userName
+      { $set: req.body }, // Update with the fields in the request body
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedTeacher) {
+      return res.status(404).json({ message: "Teacher not found" });
+    }
+
+    res.status(200).json({
+      message: "Teacher details updated successfully",
+      teacher: updatedTeacher,
+    });
+  } catch (error) {
+    console.error("Error during update:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
 module.exports = router;
