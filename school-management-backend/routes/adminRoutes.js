@@ -5,6 +5,8 @@ const { Admin } = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 const { Class } = require("../models/Class");
+const { Student } = require("../models/Student");
+const { Teacher } = require("../models/Teacher");
 
 // Signup Validation Schema
 const signupBody = zod.object({
@@ -336,11 +338,133 @@ router.get("/search-class", async (req, res) => {
 
     // Respond with formatted data
     res.json({
-      user: classes.map((classItem) => ({
+      classes: classes.map((classItem) => ({
         className: classItem.className,
         teacherName: classItem.teacherName,
         studentFees: classItem.studentFees,
-        // _id: classItem._id,
+        _id: classItem._id,
+      })),
+    });
+  } catch (error) {
+    console.error("Error during search:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+//--------------------------------------------------------------------------------------------------------------------
+
+//Students search here, it is almost the same as class search
+
+router.get("/search-student", async (req, res) => {
+  try {
+    const filter = req.query.filter || ""; // Default to an empty string
+
+    // Search with regex for className or teacherName
+    const students = await Student.find({
+      $or: [
+        {
+          userName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          studentFirstName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          studentLastName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          gender: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+      ],
+    });
+
+    // Respond with formatted data
+    res.json({
+      students: students.map((studentsItems) => ({
+        userName: studentsItems.userName,
+        studentFirstName: studentsItems.studentFirstName,
+        studentLastName: studentsItems.studentLastName,
+        gender: studentsItems.gender,
+        contactNumber: studentsItems.contactNumber,
+        feesPaid: studentsItems.feesPaid,
+        dateOfBirth: studentsItems.dateOfBirth,
+        // for privacy reasons I don't want to show password
+        _id: studentsItems._id,
+      })),
+    });
+  } catch (error) {
+    console.error("Error during search:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
+
+//--------------------------------------------------------------------------------------------------------------------
+
+//Teacher search here, it is almost the same as class and student search
+
+router.get("/search-teacher", async (req, res) => {
+  try {
+    const filter = req.query.filter || ""; // Default to an empty string
+
+    // Search with regex for className or teacherName
+    const teachers = await Teacher.find({
+      $or: [
+        {
+          userName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          teacherFirstName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          teacherLastName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          gender: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+      ],
+    });
+
+    // Respond with formatted data
+    res.json({
+      teachers: teachers.map((teachersItems) => ({
+        userName: teachersItems.userName,
+        teacherFirstName: teachersItems.teacherFirstName,
+        teacherLastName: teachersItems.teacherLastName,
+        gender: teachersItems.gender,
+        contactNumber: teachersItems.contactNumber,
+        salary: teachersItems.salary,
+        dateOfBirth: teachersItems.dateOfBirth,
+        // for privacy reasons I don't want to show password
+        _id: teachersItems._id,
       })),
     });
   } catch (error) {
