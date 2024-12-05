@@ -2,6 +2,8 @@ const zod = require("zod");
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const app = express();
+const classRoutes = require("./routes/classRoutes");
 
 const signupBody = zod.object({
   userName: zod.string().email(),
@@ -9,7 +11,6 @@ const signupBody = zod.object({
   lastName: zod.string(),
   password: zod.string(),
 });
-
 router.post("/signup", async (req, res) => {
   const { success } = signupBody.safeParse(req.body);
   if (!success) {
@@ -89,5 +90,9 @@ router.post("/signin", async (req, res) => {
     message: "Error while logging in",
   });
 });
+
+// Add class to the datbase...
+
+app.use("/api/admin/classes", classRoutes);
 
 module.exports = router;

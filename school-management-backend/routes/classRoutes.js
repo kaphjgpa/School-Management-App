@@ -1,17 +1,16 @@
 const express = require("express");
-
 const router = express.Router();
 const zod = require("zod");
 const { Class } = require("../models/Class");
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../config");
 
-const signupBody = zod.object({
+const addClassBody = zod.object({
   className: zod.string(),
-  year: zod.number().integer(),
-  teacher: zod.string(),
+  time: zod.number(),
+  teacherName: zod.string(),
+  maxStudents: zod.number().integer(),
   studentfees: zod.number().positive(),
-  // studentLists: zod.number().positive
+  year: zod.number().integer(),
+  // studentLists: zod.number().positive(),
 });
 
 router.post("/createclass", async (req, res) => {
@@ -30,19 +29,20 @@ router.post("/createclass", async (req, res) => {
     });
   }
 
-  const createclass = await Class.create({
+  const createClass = await Class.create({
     className: req.body.className,
-    year: req.body.year,
-    teacher: req.body.teacher,
+    time: req.body.time,
+    teacherName: req.body.teacher,
+    maxStudents: req.body.maxStudents,
     studentFees: req.body.studentFees,
-    // studentLists: req.body.studentLists
+    year: req.body.year,
   });
 
   const createclassId = class_id;
 
   const token = jwt.sign(
     {
-      userId,
+      createclassId,
     },
     JWT_SECRET
   );
