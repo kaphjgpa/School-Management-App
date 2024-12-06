@@ -191,61 +191,61 @@ router.put("/update-details", async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------
 // Search for teachers
 
-// router.get("/search-teacher", async (req, res) => {
-//   try {
-//     const filter = req.query.filter || ""; // Default to an empty string
+router.get("/search-teacher", async (req, res) => {
+  try {
+    const filter = req.query.filter || ""; // Default to an empty string
 
-//     // Search with regex for className or teacherName
-//     const teachers = await Teacher.find({
-//       $or: [
-//         {
-//           userName: {
-//             $regex: filter,
-//             $options: "i", // Case-insensitive search
-//           },
-//         },
-//         {
-//           teacherFirstName: {
-//             $regex: filter,
-//             $options: "i", // Case-insensitive search
-//           },
-//         },
-//         {
-//           teacherLastName: {
-//             $regex: filter,
-//             $options: "i", // Case-insensitive search
-//           },
-//         },
-//         {
-//           gender: {
-//             $regex: filter,
-//             $options: "i", // Case-insensitive search
-//           },
-//         },
-//       ],
-//     });
+    // Search with regex for className or teacherName
+    const teachers = await Teacher.find({
+      $or: [
+        {
+          userName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          teacherFirstName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          teacherLastName: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+        {
+          gender: {
+            $regex: filter,
+            $options: "i", // Case-insensitive search
+          },
+        },
+      ],
+    });
 
-//     // Respond with formatted data
-//     res.json({
-//       teachers: teachers.map((teachersItems) => ({
-//         userName: teachersItems.userName,
-//         teacherFirstName: teachersItems.teacherFirstName,
-//         teacherLastName: teachersItems.teacherLastName,
-//         gender: teachersItems.gender,
-//         contactNumber: teachersItems.contactNumber,
-//         salary: teachersItems.salary,
-//         dateOfBirth: teachersItems.dateOfBirth,
-//         // for privacy reasons I don't want to show password
-//         _id: teachersItems._id,
-//       })),
-//     });
-//   } catch (error) {
-//     console.error("Error during search:", error.message);
-//     res.status(500).json({
-//       message: "Internal server error",
-//       error: error.message,
-//     });
-//   }
-// });
+    // Respond with formatted data
+    res.json({
+      teachers: teachers.map((teachersItems) => ({
+        userName: teachersItems.userName,
+        teacherFirstName: teachersItems.teacherFirstName,
+        teacherLastName: teachersItems.teacherLastName,
+        gender: teachersItems.gender,
+        contactNumber: teachersItems.contactNumber,
+        //Removing salary information
+        dateOfBirth: teachersItems.dateOfBirth,
+        // for privacy reasons I don't want to show password
+        _id: teachersItems._id,
+      })),
+    });
+  } catch (error) {
+    console.error("Error during search:", error.message);
+    res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;
