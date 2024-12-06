@@ -1,8 +1,10 @@
+import LandingPage from "../components/LandingPage";
+
 function App() {
   return (
-    <>
-      <h1>Hello guys</h1>
-    </>
+    <div>
+      <LandingPage />
+    </div>
   );
 }
 
