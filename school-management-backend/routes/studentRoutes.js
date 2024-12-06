@@ -256,4 +256,29 @@ router.get("/search-student", async (req, res) => {
   }
 });
 
+router.delete("/delete-student/:userName", async (req, res) => {
+  try {
+    const userName = req.params.userName;
+
+    // Find and delete the student by userName
+    const deletedStudent = await Student.findOneAndDelete({ userName });
+
+    if (!deletedStudent) {
+      return res
+        .status(404)
+        .json({ message: "Student not found with the given userName" });
+    }
+
+    res.status(200).json({
+      message: "Student profile deleted successfully",
+      student: deletedStudent,
+    });
+  } catch (error) {
+    console.error("Error deleting student:", error);
+    res.status(500).json({
+      message: "An error occurred while deleting the student profile",
+    });
+  }
+});
+
 module.exports = router;

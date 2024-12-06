@@ -540,4 +540,32 @@ router.get("/search-teacher", async (req, res) => {
   }
 });
 
+//--------------------------------------------------------------------------------------------------------------------
+//Deleting class from DB
+
+router.delete("/delete-class/:className", async (req, res) => {
+  try {
+    const className = req.params.className;
+
+    // Find and delete the student by userName
+    const deletedClass = await Class.findOneAndDelete({ className });
+
+    if (!deletedClass) {
+      return res
+        .status(404)
+        .json({ message: "Teacher not found with the given userName" });
+    }
+
+    res.status(200).json({
+      message: "Class profile deleted successfully",
+      student: deletedClass,
+    });
+  } catch (error) {
+    console.error("Error deleting class:", error);
+    res.status(500).json({
+      message: "An error occurred while deleting the class",
+    });
+  }
+});
+
 module.exports = router;
