@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const studentSchema = new mongoose.Schema({
   userName: {
@@ -7,6 +8,7 @@ const studentSchema = new mongoose.Schema({
     trim: true,
     minlength: 3,
     maxlength: 255,
+    unique: true, // Ensures no duplicate usernames
   },
   studentFirstName: {
     type: String,
@@ -25,50 +27,47 @@ const studentSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: true,
-    min: 1,
-    max: 12,
+    enum: ["male", "female", "other"],
   },
   dateOfBirth: {
-    type: String,
+    type: Date,
     required: true,
-    trim: true,
-    minlength: 3,
-    maxlength: 255,
-  },
-  class: {
-    type: Number,
-    required: true,
-    trim: true,
-    minlength: [1, "Class name must be at least 1 digits"],
-    maxlength: [2, "Class name must be at most 2 digits"],
-    match: [/^\d{10}$/, "Class name must be a valid 1-12th"], // Regex for validation
   },
   contactNumber: {
-    type: Number,
+    type: String, // String to allow length validation
     required: true,
     trim: true,
-    minlength: [10, "Contact number must be at least 10 digits"],
-    maxlength: [10, "Contact number must be at most 10 digits"],
-    match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
+    match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"],
   },
   feesPaid: {
     type: Number,
     required: true,
-    trim: true,
-    min: 10000,
-    max: 100000,
+    min: 1000,
+    max: 12000,
   },
   password: {
     type: String,
     required: true,
     trim: true,
     minlength: 8,
-    maxlength: 1000,
   },
-  assignedClass: {
+  class: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Class",
+    required: true,
   },
+});
+
+// Hash password before saving the document
+studentSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Student = mongoose.model("Student", studentSchema);

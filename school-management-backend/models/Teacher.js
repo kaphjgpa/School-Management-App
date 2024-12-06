@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const teacherSchema = new mongoose.Schema({
   userName: {
@@ -33,8 +34,7 @@ const teacherSchema = new mongoose.Schema({
   gender: {
     type: String,
     required: true,
-    min: 1,
-    max: 12,
+    enum: ["male", "female", "other"],
   },
   dateOfBirth: {
     type: String,
@@ -44,7 +44,7 @@ const teacherSchema = new mongoose.Schema({
     maxlength: 255,
   },
   contactNumber: {
-    type: String,
+    type: Number,
     required: true,
     trim: true,
     minlength: [10, "Contact number must be at least 10 digits"],
@@ -65,6 +65,17 @@ const teacherSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 50,
   },
+});
+
+teacherSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Teacher = mongoose.model("Teacher", teacherSchema);

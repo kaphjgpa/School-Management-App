@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const zod = require("zod");
 const { Student } = require("../models/Student");
+const { Class } = require("../models/Class");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
 
@@ -15,7 +16,7 @@ const signupBody = zod.object({
   feesPaid: zod.number().min(5),
   contactNumber: zod.number().min(10),
   password: zod.string().min(8, "Password must be at least 8 characters long"),
-  class: zod.number(),
+  className: zod.string(), // Use className instead of class number
 });
 
 // Signup Route
@@ -40,17 +41,40 @@ router.post("/signup", async (req, res) => {
       });
     }
 
-    // Create a new Student account
+    // Find the class by className
+    const classDocument = await Class.findOne({
+      className: req.body.className,
+    });
+
+    // If no class is found, return an error
+    if (!classDocument) {
+      return res.status(404).json({
+        message: "Class not found",
+      });
+    }
+
+    // Check if the class has reached the max number of students
+    if (classDocument.currentStudents >= classDocument.maxStudents) {
+      return res.status(400).json({
+        message: "This class has reached its maximum student limit.",
+      });
+    }
+
+    // Increment the currentStudents in the Class document
+    classDocument.currentStudents += 1;
+    await classDocument.save();
+
+    // Create a new Student account and assign the class
     const student = await Student.create({
       userName: req.body.userName,
       studentFirstName: req.body.studentFirstName,
       studentLastName: req.body.studentLastName,
       gender: req.body.gender,
       dateOfBirth: req.body.dateOfBirth,
-      class: req.body.class,
       contactNumber: req.body.contactNumber,
       feesPaid: req.body.feesPaid,
       password: req.body.password, // You should hash the password (see notes)
+      class: classDocument._id, // Assign the class ObjectId to the student
     });
 
     // Generate a JWT token
@@ -72,6 +96,8 @@ router.post("/signup", async (req, res) => {
     });
   }
 });
+
+module.exports = router;
 
 // Signin Validation Schema
 const signinBody = zod.object({

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const adminSchema = new mongoose.Schema({
   userName: {
@@ -22,6 +23,11 @@ const adminSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 20,
   },
+  gender: {
+    type: String,
+    required: true,
+    enum: ["male", "female", "other"],
+  },
   password: {
     type: String,
     required: true,
@@ -37,6 +43,16 @@ const adminSchema = new mongoose.Schema({
     maxlength: [10, "Contact number must be at most 10 digits"],
     match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
   },
+});
+adminSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (error) {
+    next(error);
+  }
 });
 
 const Admin = mongoose.model("Admin", adminSchema);

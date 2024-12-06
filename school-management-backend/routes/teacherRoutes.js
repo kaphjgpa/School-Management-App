@@ -13,7 +13,7 @@ const signupBody = zod.object({
   gender: zod.string(),
   dateOfBirth: zod.string(),
   salary: zod.number().min(5),
-  contactNumber: zod.string(),
+  contactNumber: zod.number(),
   password: zod.string().min(6, "Password must be at least 8 characters long"),
 });
 

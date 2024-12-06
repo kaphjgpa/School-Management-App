@@ -13,8 +13,9 @@ const signupBody = zod.object({
   userName: zod.string().email(),
   firstName: zod.string().min(1, "First name is required"),
   lastName: zod.string().min(1, "Last name is required"),
+  gender: zod.string(),
   password: zod.string().min(6, "Password must be at least 6 characters long"),
-  contactNumber: zod.string(),
+  contactNumber: zod.number().min(10),
 });
 
 // Signup Route
@@ -43,6 +44,7 @@ router.post("/signup", async (req, res) => {
       password: req.body.password, // You should hash the password (see notes)
       firstName: req.body.firstName,
       lastName: req.body.lastName,
+      gender: req.body.gender,
       contactNumber: req.body.contactNumber,
     });
 
@@ -190,11 +192,9 @@ router.put("/update-details", async (req, res) => {
 // Zod schema for request validation
 const addClassBody = zod.object({
   className: zod.string(), // Adding validation for length
-  startTime: zod.number().positive(), // Ensuring time is positive
-  endTime: zod.number().positive(),
   teacherName: zod.string().min(3).max(255), // Corrected key to match the schema
   maxStudents: zod.number().int().positive(), // Ensure it's a positive integer
-  studentFees: zod.number().int().positive(), // Corrected casing to match the schema
+  studentsFees: zod.number().int().positive(), // Corrected casing to match the schema
   year: zod.number().int().min(2024).max(2030), // Added range validation for year
 });
 
@@ -224,11 +224,9 @@ router.post("/createclass", async (req, res) => {
     // Create the new class
     const createClass = await Class.create({
       className: req.body.className, // Ensure consistent casing
-      startTime: req.body.startTime,
-      endTime: req.body.endTime, // Corrected key to match the schema
       teacherName: req.body.teacherName, // Adjusted key to match the schema
       maxStudents: req.body.maxStudents,
-      studentFees: req.body.studentFees, // Adjusted casing to match the schema
+      studentsFees: req.body.studentsFees, // Adjusted casing to match the schema
       year: req.body.year,
     });
 
