@@ -59,8 +59,11 @@ const teacherSchema = new mongoose.Schema({
     max: 100000,
   },
   assignedClass: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Class",
+    type: String,
+    required: false,
+    trim: true,
+    minlength: 3,
+    maxlength: 50,
   },
 });
 
