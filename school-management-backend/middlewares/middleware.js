@@ -21,6 +21,18 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
+const paginationMiddleware = (req, res, next) => {
+  req.query.page = parseInt(req.query.page || 1);
+  req.query.limit = parseInt(req.query.limit || 10);
+
+  if (req.query.page <= 0 || req.query.limit <= 0) {
+    return res.status(400).json({ message: "Invalid pagination parameters" });
+  }
+
+  next();
+};
+
 module.exports = {
   authMiddleware,
+  paginationMiddleware,
 };

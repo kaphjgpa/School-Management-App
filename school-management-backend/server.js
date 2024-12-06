@@ -5,6 +5,10 @@ const connectDB = require("./config/database");
 const teacherRoutes = require("./routes/teacherRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const {
+  authMiddleware,
+  paginationMiddleware,
+} = require("./middlewares/middleware");
 
 // Load environment variables
 dotenv.config();
@@ -18,9 +22,14 @@ connectDB();
 // Middleware
 app.use(cors());
 app.use(express.json());
+// Apply middleware to all the possible routes, which starts from there 3 main routes
+app.use(authMiddleware);
 
 // Routes
 app.use("/api/admin", adminRoutes);
+
+// Applying paginationMiddleware to "students" and "teachers" routes
+app.use(paginationMiddleware);
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/students", studentRoutes);
 
