@@ -2,6 +2,7 @@ import SignIn from "../components/Signin";
 import SignUp from "../components/SignUp";
 import LandingPage from "../components/LandingPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { AdminDashboard } from "../components/AdminDashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -22,6 +23,14 @@ function App() {
       element: (
         <>
           <SignIn />
+        </>
+      ),
+    },
+    {
+      path: "/admindashboard",
+      element: (
+        <>
+          <AdminDashboard />
         </>
       ),
     },

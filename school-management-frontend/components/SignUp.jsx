@@ -2,7 +2,10 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"; // shadcn/ui input
+
 import { BottomWarning } from "./BttomWarning";
+import { Label } from "@/components/ui/label"; // shadcn/ui label
 
 export const SignUp = () => {
   const [userType, setUserType] = useState("admin");
@@ -14,6 +17,7 @@ export const SignUp = () => {
   };
 
   const handleSubmit = async () => {
+    // const navigate = useNavigate();
     try {
       // Parsing specific fields into numbers
       const parsedSalary = formData.salary
@@ -54,7 +58,6 @@ export const SignUp = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error during submission:", error);
-      alert(error.response?.data?.message || "An error occurred.");
     }
   };
 
@@ -212,17 +215,15 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="bg-white min-h-screen w-screen flex justify-center items-center">
-      <div className="bg-gray-100 rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-3xl font-bold mb-6 text-center text-zinc-900">
-          Signup Now
-        </h2>
+    <div className="bg-gray-100 min-h-screen w-screen flex justify-center items-center">
+      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
         <label className="block mb-4">
-          <span className="text-zinc-900 font-semibold">User Type</span>
+          <Label className="mb-2">Select Role</Label>
           <select
             value={userType}
             onChange={(e) => setUserType(e.target.value)}
-            className="form-select mt-2 block w-full h-8 text-white outline-none border-gray-300 rounded-md shadow-sm  bg-zinc-900 "
+            className="w-full h-8 outline-none border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500 bg-slate-100 "
           >
             <option value="admin">Admin</option>
             <option value="teacher">Teacher</option>
@@ -249,12 +250,12 @@ export const SignUp = () => {
 const InputBox = ({ name, label, placeholder, type = "text", onChange }) => (
   <div>
     <label className="block text-zinc-900 font-medium">{label}</label>
-    <input
+    <Input
       type={type}
       name={name}
       placeholder={placeholder}
       onChange={onChange}
-      className=" h-8 mt-2 block w-full outline-none text-white border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-zinc-800"
+      className="w-full h-8 outline-none border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500 bg-slate-100 "
     />
   </div>
 );
@@ -265,7 +266,7 @@ const GenderSelect = ({ name, onChange }) => (
     <select
       name={name}
       onChange={onChange}
-      className="form-select h-8 mt-2 block w-full outline-none border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-zinc-900 text-white "
+      className="w-full h-8 outline-none border-gray-300 rounded-md shadow-sm focus:ring-slate-500 focus:border-slate-500 bg-slate-100 "
     >
       <option value="">Select Gender</option>
       <option value="male">Male</option>
