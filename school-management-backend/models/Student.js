@@ -30,7 +30,7 @@ const studentSchema = new mongoose.Schema({
     enum: ["male", "female", "other"],
   },
   dateOfBirth: {
-    type: Date,
+    type: String,
     required: true,
   },
   contactNumber: {

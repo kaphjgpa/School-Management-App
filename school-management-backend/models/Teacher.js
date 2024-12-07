@@ -24,13 +24,6 @@ const teacherSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 6,
-    maxlength: 1000,
-  },
   gender: {
     type: String,
     required: true,
@@ -43,6 +36,13 @@ const teacherSchema = new mongoose.Schema({
     minlength: 3,
     maxlength: 255,
   },
+  salary: {
+    type: Number,
+    required: true,
+    trim: true,
+    min: 10000,
+    max: 100000,
+  },
   contactNumber: {
     type: Number,
     required: true,
@@ -51,12 +51,12 @@ const teacherSchema = new mongoose.Schema({
     maxlength: [10, "Contact number must be at most 10 digits"],
     match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
   },
-  salary: {
-    type: Number,
+  password: {
+    type: String,
     required: true,
     trim: true,
-    min: 10000,
-    max: 100000,
+    minlength: 6,
+    maxlength: 1000,
   },
   assignedClass: {
     type: String,

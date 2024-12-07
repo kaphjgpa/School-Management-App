@@ -23,7 +23,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 // Apply middleware to all the possible routes, which starts from there 3 main routes
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
 // Routes
 app.use("/api/admin", adminRoutes);

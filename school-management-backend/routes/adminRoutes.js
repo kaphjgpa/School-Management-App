@@ -3,6 +3,7 @@ const router = express.Router();
 const zod = require("zod");
 const { Admin } = require("../models/Admin");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { JWT_SECRET } = require("../config");
 const { Class } = require("../models/Class");
 const { Student } = require("../models/Student");
@@ -15,7 +16,9 @@ const signupBody = zod.object({
   lastName: zod.string().min(1, "Last name is required"),
   gender: zod.string(),
   password: zod.string().min(6, "Password must be at least 6 characters long"),
-  contactNumber: zod.number().min(10),
+  contactNumber: zod
+    .number()
+    .min(1000000000, "Contact number must be at least 10 digits"), // Ensure a valid phone number
 });
 
 // Signup Route
@@ -30,6 +33,15 @@ router.post("/signup", async (req, res) => {
       });
     }
 
+    // Check if an admin already exists
+    const existingAdmin = await Admin.findOne();
+    if (existingAdmin) {
+      return res.status(403).json({
+        message:
+          "An admin account already exists. Multiple admin accounts are not allowed.",
+      });
+    }
+
     // Check if the email is already registered
     const existingUser = await Admin.findOne({ userName: req.body.userName });
     if (existingUser) {
@@ -41,7 +53,7 @@ router.post("/signup", async (req, res) => {
     // Create a new administrator
     const admin = await Admin.create({
       userName: req.body.userName,
-      password: req.body.password, // You should hash the password (see notes)
+      password: req.body.password,
       firstName: req.body.firstName,
       lastName: req.body.lastName,
       gender: req.body.gender,
@@ -56,7 +68,7 @@ router.post("/signup", async (req, res) => {
     );
 
     res.status(201).json({
-      message: "User created successfully",
+      message: "Admin account created successfully",
       token: token,
     });
   } catch (error) {
@@ -68,16 +80,18 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-// Signin Validation Schema
+//------------------------------------------------------------------------------------------------
+
+// Signin Validation Schema (using Zod)
 const signinBody = zod.object({
-  userName: zod.string().email(),
-  password: zod.string().min(6),
+  userName: zod.string().email(), // Ensure valid email format for username
+  password: zod.string().min(6), // Minimum length for password
 });
-//--------------------------------------------------------------------------------------------------------------------
+
 // Signin Route
 router.post("/signin", async (req, res) => {
   try {
-    // Validate the request body
+    // Validate the request body using Zod
     const validation = signinBody.safeParse(req.body);
     if (!validation.success) {
       return res.status(400).json({
@@ -86,7 +100,7 @@ router.post("/signin", async (req, res) => {
       });
     }
 
-    // Authenticate the administrator
+    // Authenticate the administrator by userName (email)
     const admin = await Admin.findOne({ userName: req.body.userName });
     if (!admin) {
       return res.status(404).json({
@@ -94,18 +108,22 @@ router.post("/signin", async (req, res) => {
       });
     }
 
-    // Validate the password (hash comparison recommended)
-    if (admin.password !== req.body.password) {
+    // Validate the password by comparing the plain-text password with the hashed password
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      admin.password
+    );
+    if (!isPasswordMatch) {
       return res.status(401).json({
         message: "Incorrect password",
       });
     }
 
-    // Generate a JWT token
+    // Generate a JWT token after successful authentication
     const token = jwt.sign(
       { adminId: admin._id },
-      JWT_SECRET,
-      { expiresIn: "1h" } // Optional: Set token expiration
+      "your_jwt_secret", // Replace with your actual JWT secret
+      { expiresIn: "12h" } // Optional: Set token expiration time
     );
 
     res.status(200).json({
@@ -120,7 +138,6 @@ router.post("/signin", async (req, res) => {
     });
   }
 });
-
 //------------------------------------------------------------------------------------------
 
 // Updating the Admin Details...

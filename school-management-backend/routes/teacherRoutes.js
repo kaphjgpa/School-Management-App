@@ -97,8 +97,12 @@ router.post("/signin", async (req, res) => {
       });
     }
 
-    // Validate the password (hash comparison recommended)
-    if (teacher.password !== req.body.password) {
+    // Validate the password by comparing the plain-text password with the hashed password
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      teacher.password
+    );
+    if (!isPasswordMatch) {
       return res.status(401).json({
         message: "Incorrect password",
       });

@@ -43,6 +43,11 @@ const adminSchema = new mongoose.Schema({
     maxlength: [10, "Contact number must be at most 10 digits"],
     match: [/^\d{10}$/, "Contact number must be a valid 10-digit number"], // Regex for validation
   },
+  isAdmin: {
+    type: Boolean,
+    default: true, // Always true for the admin schema
+    unique: true, // Ensures only one admin can exist
+  },
 });
 adminSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();

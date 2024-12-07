@@ -4,6 +4,7 @@ const zod = require("zod");
 const { Student } = require("../models/Student");
 const { Class } = require("../models/Class");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { JWT_SECRET } = require("../config");
 
 // Signup Validation Schema
@@ -127,8 +128,12 @@ router.post("/signin", async (req, res) => {
       });
     }
 
-    // Validate the password (hash comparison recommended)
-    if (student.password !== req.body.password) {
+    // Validate the password by comparing the plain-text password with the hashed password
+    const isPasswordMatch = await bcrypt.compare(
+      req.body.password,
+      student.password
+    );
+    if (!isPasswordMatch) {
       return res.status(401).json({
         message: "Incorrect password",
       });
