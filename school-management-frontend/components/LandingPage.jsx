@@ -12,6 +12,7 @@ import {
   ListChecks,
   Columns3,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const FeatureCard = ({ Icon, title, description }) => (
   <Card className="flex flex-col items-center p-6 text-center">
@@ -59,7 +60,9 @@ export default function LandingPage() {
           Take control of your school
         </p>
         <div className="mt-6 flex gap-4">
-          <Button>Signup</Button>
+          <Link to="/signup">
+            <Button>Signup</Button>
+          </Link>
         </div>
       </section>
 
