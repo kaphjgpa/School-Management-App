@@ -1,4 +1,5 @@
-import DynamicForm from "../components/DynamicForm";
+import SignIn from "../components/Signin";
+import SignUp from "../components/SignUp";
 import LandingPage from "../components/LandingPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -12,7 +13,15 @@ function App() {
       path: "/signup",
       element: (
         <>
-          <DynamicForm />
+          <SignUp />
+        </>
+      ),
+    },
+    {
+      path: "/signin",
+      element: (
+        <>
+          <SignIn />
         </>
       ),
     },
