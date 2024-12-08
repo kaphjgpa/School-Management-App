@@ -11,77 +11,86 @@ import {
 } from "../src/components/ui/table";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
-
-// Mock data for demonstration
-const teachers = [
-  {
-    id: 1,
-    name: "John Doe",
-    subject: "Mathematics",
-    email: "john@example.com",
-  },
-  { id: 2, name: "Jane Smith", subject: "English", email: "jane@example.com" },
-  { id: 3, name: "Bob Johnson", subject: "Science", email: "bob@example.com" },
-  {
-    id: 4,
-    name: "Alice Brown",
-    subject: "History",
-    email: "alice@example.com",
-  },
-];
+import axios from "axios";
 
 export default function SearchClass() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(teachers);
+  const [filter, setFilter] = useState("");
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSearch = () => {
-    const results = teachers.filter(
-      (teacher) =>
-        teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setSearchResults(results);
+  const handleSearch = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/search-class`,
+        {
+          params: { filter },
+        }
+      );
+      setClasses(response.data.classes);
+    } catch (err) {
+      console.error("Search error:", err);
+      setError("Failed to fetch classes. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
-        <div className="container justify-center mx-auto p-4">
-          <Link to={"/admindashboard"}>
-            <ChevronLeft className="text-black" />
-          </Link>
-          <h1 className="text-2xl font-bold mb-4">Class Search</h1>
-          <div className="flex gap-2 mb-4">
-            <Input
-              type="text"
-              placeholder="Search by name, subject, or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-grow"
-            />
-            <Button onClick={handleSearch}>Search</Button>
-          </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead>Email</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {searchResults.map((teacher) => (
-                <TableRow key={teacher.id}>
-                  <TableCell>{teacher.name}</TableCell>
-                  <TableCell>{teacher.subject}</TableCell>
-                  <TableCell>{teacher.email}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+    <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
+      <div className="container mx-auto p-4">
+        <Link to={"/admindashboard"}>
+          <ChevronLeft className="text-black mb-4" />
+        </Link>
+        <h1 className="text-2xl font-bold mb-4">Class Search</h1>
+        <div className="flex gap-2 mb-4">
+          <Input
+            type="text"
+            placeholder="Search by class name, teacher name, or fees"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="flex-grow"
+          />
+          <Button onClick={handleSearch} disabled={loading}>
+            {loading ? (
+              <>
+                <span className="loader" /> Searching...
+              </>
+            ) : (
+              "Search"
+            )}
+          </Button>
         </div>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Class Name</TableHead>
+              <TableHead>Teacher Name</TableHead>
+              <TableHead>Student Fees</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {classes.length > 0 ? (
+              classes.map((cls) => (
+                <TableRow key={cls._id}>
+                  <TableCell>{cls.className || "N/A"}</TableCell>
+                  <TableCell>{cls.teacherName || "N/A"}</TableCell>
+                  <TableCell>{cls.studentsFees || "N/A"}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={3} className="text-center">
+                  No classes found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-    </>
+    </div>
   );
 }
