@@ -66,7 +66,7 @@ router.post("/signup", async (req, res) => {
     await classDocument.save();
 
     // Create a new Student account and assign the class
-    const student = await Student.create({
+    const user = await Student.create({
       userName: req.body.userName,
       studentFirstName: req.body.studentFirstName,
       studentLastName: req.body.studentLastName,
@@ -80,7 +80,7 @@ router.post("/signup", async (req, res) => {
 
     // Generate a JWT token
     const token = jwt.sign(
-      { studentId: student._id },
+      { userId: user._id },
       JWT_SECRET,
       { expiresIn: "1h" } // Optional: Set token expiration
     );
@@ -121,8 +121,8 @@ router.post("/signin", async (req, res) => {
     }
 
     // Authenticate the Student
-    const student = await Student.findOne({ userName: req.body.userName });
-    if (!student) {
+    const user = await Student.findOne({ userName: req.body.userName });
+    if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
@@ -131,7 +131,7 @@ router.post("/signin", async (req, res) => {
     // Validate the password by comparing the plain-text password with the hashed password
     const isPasswordMatch = await bcrypt.compare(
       req.body.password,
-      student.password
+      user.password
     );
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -141,9 +141,9 @@ router.post("/signin", async (req, res) => {
 
     // Generate a JWT token
     const token = jwt.sign(
-      { studentId: student._id },
+      { userId: user._id },
       JWT_SECRET,
-      { expiresIn: "1h" } // Optional: Set token expiration
+      { expiresIn: "12h" } // Optional: Set token expiration
     );
 
     res.status(200).json({

@@ -8,6 +8,7 @@ const { JWT_SECRET } = require("../config");
 const { Class } = require("../models/Class");
 const { Student } = require("../models/Student");
 const { Teacher } = require("../models/Teacher");
+const { authMiddleware } = require("../middlewares/middleware");
 
 // Signup Validation Schema
 const signupBody = zod.object({
@@ -51,7 +52,7 @@ router.post("/signup", async (req, res) => {
     }
 
     // Create a new administrator
-    const admin = await Admin.create({
+    const user = await Admin.create({
       userName: req.body.userName,
       password: req.body.password,
       firstName: req.body.firstName,
@@ -62,9 +63,9 @@ router.post("/signup", async (req, res) => {
 
     // Generate a JWT token
     const token = jwt.sign(
-      { adminId: admin._id },
+      { userId: user._id },
       JWT_SECRET,
-      { expiresIn: "1h" } // Optional: Set token expiration
+      { expiresIn: "12h" } // Optional: Set token expiration
     );
 
     res.status(201).json({
@@ -101,8 +102,8 @@ router.post("/signin", async (req, res) => {
     }
 
     // Authenticate the administrator by userName (email)
-    const admin = await Admin.findOne({ userName: req.body.userName });
-    if (!admin) {
+    const user = await Admin.findOne({ userName: req.body.userName });
+    if (!user) {
       return res.status(404).json({
         message: "User not found",
       });
@@ -111,7 +112,7 @@ router.post("/signin", async (req, res) => {
     // Validate the password by comparing the plain-text password with the hashed password
     const isPasswordMatch = await bcrypt.compare(
       req.body.password,
-      admin.password
+      user.password
     );
     if (!isPasswordMatch) {
       return res.status(401).json({
@@ -121,8 +122,8 @@ router.post("/signin", async (req, res) => {
 
     // Generate a JWT token after successful authentication
     const token = jwt.sign(
-      { adminId: admin._id },
-      "your_jwt_secret", // Replace with your actual JWT secret
+      { userId: user._id },
+      JWT_SECRET, // Replace with your actual JWT secret
       { expiresIn: "12h" } // Optional: Set token expiration time
     );
 
@@ -148,7 +149,7 @@ const updateBody = zod.object({
   lastName: zod.string().optional(),
 });
 
-router.put("/update-details", async (req, res) => {
+router.put("/update-details", authMiddleware, async (req, res) => {
   try {
     // Validate the request body
     const validation = updateBody.safeParse(req.body);
@@ -193,7 +194,7 @@ router.put("/update-details", async (req, res) => {
 
     res.status(200).json({
       message: "Admin details updated successfully",
-      admin: updatedAdmin,
+      user: updatedAdmin,
     });
   } catch (error) {
     console.error("Error during update:", error.message);
@@ -215,7 +216,7 @@ const addClassBody = zod.object({
   year: zod.number().int().min(2024).max(2030), // Added range validation for year
 });
 
-router.post("/createclass", async (req, res) => {
+router.post("/createclass", authMiddleware, async (req, res) => {
   try {
     // Validate request body with Zod
     const validation = addClassBody.safeParse(req.body);
@@ -270,7 +271,7 @@ const updateClass = zod.object({
   teacherName: zod.string().optional(),
 });
 
-router.put("/update-class", async (req, res) => {
+router.put("/update-class", authMiddleware, async (req, res) => {
   try {
     // Validate the request body
     const validation = updateClass.safeParse(req.body);

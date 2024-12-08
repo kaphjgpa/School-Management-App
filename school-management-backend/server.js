@@ -19,16 +19,28 @@ const app = express();
 // Connect to the database
 connectDB();
 
-// Middleware
-app.use(cors());
+// Middleware for JSON parsing
 app.use(express.json());
-// Apply middleware to all the possible routes, which starts from there 3 main routes
+
+// Enable CORS
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Replace with your frontend's URL
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // Allow credentials like cookies or authorization headers
+  })
+);
+
+// Handle preflight requests explicitly
+app.options("*", cors());
+
+// Apply middleware to all possible routes, which starts from three main routes
+// Uncomment if you have specific authentication logic in `authMiddleware`
 // app.use(authMiddleware);
 
 // Routes
 app.use("/api/admin", adminRoutes);
-
-// Applying paginationMiddleware to "students" and "teachers" routes
 app.use(paginationMiddleware);
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/students", studentRoutes);
@@ -40,6 +52,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
+// Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

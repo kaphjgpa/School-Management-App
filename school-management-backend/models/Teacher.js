@@ -60,7 +60,7 @@ const teacherSchema = new mongoose.Schema({
   },
   assignedClass: {
     type: String,
-    required: false,
+    required: true,
     trim: true,
     minlength: 3,
     maxlength: 50,
