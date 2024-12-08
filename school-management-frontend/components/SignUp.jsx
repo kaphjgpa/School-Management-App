@@ -253,11 +253,13 @@ export const SignUp = () => {
         >
           Submit
         </Button>
-        <BottomWarningSignUp
-          label={"Already have an account?"}
-          buttonText={"Sign in"}
-          to={"/signin"}
-        />
+        <div className="flex justify-center">
+          <p>Already have an account</p>
+          <Link className="underline" to={"/signup"}>
+            {" "}
+            SignIn
+          </Link>
+        </div>
       </div>
     </div>
   );
