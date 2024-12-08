@@ -4,6 +4,8 @@ const zod = require("zod");
 const { Teacher } = require("../models/Teacher");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../config");
+const { authMiddleware } = require("../middlewares/middleware");
+const bcrypt = require("bcryptjs");
 
 // Signup Validation Schema
 const signupBody = zod.object({
@@ -13,8 +15,9 @@ const signupBody = zod.object({
   gender: zod.string(),
   dateOfBirth: zod.string(),
   salary: zod.number().min(5),
-  contactNumber: zod.number(),
-  password: zod.string().min(6, "Password must be at least 8 characters long"),
+  contactNumber: zod
+    .number()
+    .min(1000000000, "Contact number must be at least 10 digits"),
 });
 
 // Signup Route
@@ -71,8 +74,10 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+//------------------------------------------------------------------------------
+
 // Signin Validation Schema
-const signinBody = zod.object({
+const signinBodySchema = zod.object({
   userName: zod.string().email(),
   password: zod.string().min(8),
 });
@@ -80,51 +85,51 @@ const signinBody = zod.object({
 // Signin Route
 router.post("/signin", async (req, res) => {
   try {
-    // Validate the request body
-    const validation = signinBody.safeParse(req.body);
+    // Validate request body
+    const validation = signinBodySchema.safeParse(req.body);
     if (!validation.success) {
       return res.status(400).json({
-        message: "Invalid input data",
-        errors: validation.error.errors,
+        message: "Validation error",
+        errors: validation.error.errors.map((err) => err.message),
       });
     }
 
-    // Authenticate the Teacher
-    const user = await Teacher.findOne({ userName: req.body.userName });
+    const { userName, password } = req.body;
+
+    // Check if user exists
+    const user = await Teacher.findOne({ userName });
     if (!user) {
-      return res.status(404).json({
-        message: "User not found",
-      });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    // Validate the password by comparing the plain-text password with the hashed password
-    const isPasswordMatch = await bcrypt.compare(
-      req.body.password,
-      user.password
-    );
+    // Compare passwords
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
-      return res.status(401).json({
-        message: "Incorrect password",
-      });
+      return res.status(401).json({ message: "Incorrect password" });
     }
 
-    // Generate a JWT token
+    // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: user._id, userName: user.userName },
       JWT_SECRET,
-      { expiresIn: "12h" } // Optional: Set token expiration
+      { expiresIn: "12h" }
     );
 
+    // Respond with success
     res.status(200).json({
       message: "Login successful",
-      token: token,
+      token,
+      user: {
+        id: user._id,
+        userName: user.userName,
+        role: user.role || "teacher", // Include user role if applicable
+      },
     });
   } catch (error) {
-    console.error("Error during signin:", error.message);
-    res.status(500).json({
-      message: "Internal server error",
-      error: error.message,
-    });
+    console.error("Error during sign-in:", error.message);
+    res
+      .status(500)
+      .json({ message: "Internal server error", error: error.message });
   }
 });
 
@@ -132,11 +137,11 @@ router.post("/signin", async (req, res) => {
 // Update Validation Schema
 const updateBody = zod.object({
   teacherLastName: zod.string().optional(),
-  contactNumber: zod.string().optional(),
+  contactNumber: zod.number().optional(),
   password: zod.string().min(6).optional(),
 });
 
-router.put("/update-details", async (req, res) => {
+router.put("/update-details", authMiddleware, async (req, res) => {
   try {
     // Validate the request body
     const validation = updateBody.safeParse(req.body);
