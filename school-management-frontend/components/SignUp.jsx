@@ -4,12 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"; // shadcn/ui input
 import { ChevronLeft } from "lucide-react";
-import { BottomWarningSignUp } from "./BottomWarningSignUp";
 import { Label } from "@/components/ui/label"; // shadcn/ui label
 
 export const SignUp = () => {
   const [userType, setUserType] = useState("admin");
   const [formData, setFormData] = useState({});
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -17,25 +17,26 @@ export const SignUp = () => {
   };
 
   const handleSubmit = async () => {
-    const navigate = useNavigate();
     try {
       // Parsing specific fields into numbers
-      const parsedSalary = formData.salary
-        ? Number(formData.salary)
-        : undefined;
-      const parsedFeesPaid = formData.feesPaid
-        ? Number(formData.feesPaid)
-        : undefined;
-      const parsedContactNumber = formData.contactNumber
-        ? Number(formData.contactNumber)
-        : undefined;
+      // const parsedSalary = formData.salary
+      //   ? Number(formData.salary)
+      //   : undefined;
+      // const parsedFeesPaid = formData.feesPaid
+      //   ? Number(formData.feesPaid)
+      //   : undefined;
+      // const parsedContactNumber = formData.contactNumber
+      //   ? Number(formData.contactNumber)
+      //   : undefined;
 
       // Creating a new object with parsed values
       const processedFormData = {
         ...formData,
-        salary: parsedSalary,
-        feesPaid: parsedFeesPaid,
-        contactNumber: parsedContactNumber,
+        salary: formData.salary ? Number(formData.salary) : undefined,
+        feesPaid: formData.feesPaid ? Number(formData.feesPaid) : undefined,
+        contactNumber: formData.contactNumber
+          ? Number(formData.contactNumber)
+          : undefined,
       };
 
       const endpointMap = {
@@ -255,7 +256,7 @@ export const SignUp = () => {
         </Button>
         <div className="flex justify-center">
           <p>Already have an account</p>
-          <Link className="underline" to={"/signup"}>
+          <Link className="underline" to={"/signin"}>
             {" "}
             SignIn
           </Link>

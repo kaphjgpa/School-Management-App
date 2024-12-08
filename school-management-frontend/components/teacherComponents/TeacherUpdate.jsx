@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios"; // Import Axios
-import { Button } from "../src/components/ui/button";
-import { Input } from "../src/components/ui/input";
-import { Label } from "../src/components/ui/label";
+import { Button } from "../../src/components/ui/button";
+import { Input } from "../../src/components/ui/input";
+import { Label } from "../../src/components/ui/label";
 import {
   Card,
   CardHeader,
@@ -10,48 +10,55 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "../src/components/ui/card";
+} from "../../src/components/ui/card";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminUpdateDialog() {
-  const [userName, setUserName] = useState(""); // Add userName field for identification
-  const [contactNumber, setContactNumber] = useState("");
+export default function TeacherUpdate() {
+  const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [teacherLastName, setTeacherLastName] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false); // New state for form submission trigger
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const navigate = useNavigate();
 
-  // useEffect to trigger API call after form submission
   useEffect(() => {
     if (isSubmitted) {
       const updateDetails = async () => {
-        setError(""); // Clear previous errors
-        setSuccessMessage(""); // Clear previous success message
-
-        if (!userName) {
-          setError("userName is required");
-          return;
-        }
-
-        if (!contactNumber && !password && !lastName) {
-          setError("At least one field is required to update");
-          return;
-        }
-
         try {
+          setError(""); // Clear previous errors
+          setSuccessMessage(""); // Clear previous success message
+
+          // Validation
+          if (!userName) {
+            setError("Username is required for updating details.");
+            return;
+          }
+
+          if (!password && !teacherLastName && !contactNumber) {
+            setError("Please provide at least one field to update.");
+            return;
+          }
+
           const token = localStorage.getItem("token");
           if (!token) {
             setError("Unauthorized: Please log in first.");
-            // Redirect to login page
             navigate("/signin");
             return;
           }
 
+          const formattedData = {
+            userName,
+            password,
+            teacherLastName,
+            contactNumber: Number(contactNumber),
+          };
+
           const response = await axios.put(
-            "http://localhost:3000/api/admin/update-details",
-            { userName, contactNumber, password, lastName },
+            "http://localhost:3000/api/teachers/update-details",
+            formattedData,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -60,40 +67,48 @@ export default function AdminUpdateDialog() {
             }
           );
 
-          setSuccessMessage("Details updated successfully");
-          setContactNumber("");
+          setSuccessMessage("Details updated successfully.");
+          setUserName("");
           setPassword("");
-          setLastName("");
-        } catch (error) {
-          console.error("Error during update:", error);
-          if (error.response) {
+          setTeacherLastName("");
+          setContactNumber("");
+        } catch (err) {
+          console.error("Error during update:", err);
+          if (err.response) {
             setError(
-              error.response.data.message || "Server responded with an error"
+              err.response.data.message || "Server responded with an error."
             );
-          } else if (error.request) {
+          } else if (err.request) {
             setError("No response received from the server. Please try again.");
           } else {
-            setError("An unexpected error occurred");
+            setError("An unexpected error occurred.");
           }
         } finally {
-          setIsSubmitted(false); // Reset the submission flag to avoid repeated submissions
+          setIsSubmitted(false); // Reset submission flag
         }
       };
 
       updateDetails();
     }
-  }, [isSubmitted, userName, contactNumber, password, lastName, navigate]);
+  }, [
+    isSubmitted,
+    userName,
+    password,
+    teacherLastName,
+    contactNumber,
+    navigate,
+  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setIsSubmitted(true); // Trigger the effect to run the update
+    setIsSubmitted(true);
   };
 
   const handleCancel = () => {
-    setContactNumber("");
     setPassword("");
-    setLastName("");
-    setUserName(""); // Reset the userName field
+    setTeacherLastName("");
+    setUserName("");
+    setContactNumber("");
     setError("");
     setSuccessMessage("");
   };
@@ -110,21 +125,12 @@ export default function AdminUpdateDialog() {
         <form onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="userName">Username</Label>
+              <Label htmlFor="userName">Email</Label>
               <Input
                 id="userName"
-                placeholder="Enter your username"
+                placeholder="Enter your email"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="contactNumber">Contact Number</Label>
-              <Input
-                id="contactNumber"
-                placeholder="Enter your contact number"
-                value={contactNumber}
-                onChange={(e) => setContactNumber(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -138,12 +144,22 @@ export default function AdminUpdateDialog() {
               />
             </div>
             <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="password">Contact Number</Label>
+              <Input
+                id="password"
+                type="text"
+                placeholder="Enter your new password"
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col space-y-1.5">
               <Label htmlFor="lastName">Last Name</Label>
               <Input
                 id="lastName"
                 placeholder="Enter your last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                value={teacherLastName}
+                onChange={(e) => setTeacherLastName(e.target.value)}
               />
             </div>
           </div>

@@ -5,9 +5,9 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../src/components/ui/dropdown-menu";
+} from "../../src/components/ui/dropdown-menu";
 
-export function DashboardHeader() {
+export function TeacherDashHeader() {
   const handleSignOut = () => {
     localStorage.removeItem("token");
     window.location.href = "/";
@@ -28,3 +28,5 @@ export function DashboardHeader() {
     </header>
   );
 }
+
+export default TeacherDashHeader;

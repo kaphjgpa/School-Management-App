@@ -8,6 +8,7 @@ import SearchStudent from "../components/SearchStudent";
 import SearchClass from "../components/SearchClass";
 import AdminLayout from "../components/AdminLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
+import { TeacherDashboard } from "../components/teacherComponents/TeacherDashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -70,6 +71,14 @@ function App() {
       element: (
         <>
           <SearchClass />
+        </>
+      ),
+    },
+    {
+      path: "/teacherdashboard",
+      element: (
+        <>
+          <TeacherDashboard />
         </>
       ),
     },
