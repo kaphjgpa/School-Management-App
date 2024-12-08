@@ -68,7 +68,6 @@ export default function SearchTeacher() {
         </div>
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
-        {/* Results Table */}
         <Table>
           <TableHeader>
             <TableRow>
