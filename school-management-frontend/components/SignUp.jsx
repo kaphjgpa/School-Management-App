@@ -48,6 +48,13 @@ export const SignUp = () => {
         `http://localhost:3000${endpointMap[userType]}`,
         processedFormData
       );
+
+      // Check if a token is present in the response
+      if (response.data.token) {
+        // Store the token in localStorage
+        localStorage.setItem("token", response.data.token);
+      }
+
       alert(
         `${
           userType.charAt(0).toUpperCase() + userType.slice(1)

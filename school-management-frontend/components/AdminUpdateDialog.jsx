@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios"; // Import Axios
 import { Button } from "../src/components/ui/button";
 import { Input } from "../src/components/ui/input";
 import { Label } from "../src/components/ui/label";
@@ -10,52 +11,113 @@ import {
   CardContent,
   CardFooter,
 } from "../src/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminUpdateDialog() {
+  const [userName, setUserName] = useState(""); // Add userName field for identification
   const [contactNumber, setContactNumber] = useState("");
   const [password, setPassword] = useState("");
   const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false); // New state for form submission trigger
+  const navigate = useNavigate();
+
+  // useEffect to trigger API call after form submission
+  useEffect(() => {
+    if (isSubmitted) {
+      const updateDetails = async () => {
+        setError(""); // Clear previous errors
+        setSuccessMessage(""); // Clear previous success message
+
+        if (!userName) {
+          setError("userName is required");
+          return;
+        }
+
+        if (!contactNumber && !password && !lastName) {
+          setError("At least one field is required to update");
+          return;
+        }
+
+        try {
+          const token = localStorage.getItem("token");
+          if (!token) {
+            setError("Unauthorized: Please log in first.");
+            // Redirect to login page
+            navigate("/login");
+            return;
+          }
+
+          const response = await axios.put(
+            "http://localhost:3000/api/admin/update-details",
+            { userName, contactNumber, password, lastName },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          setSuccessMessage("Details updated successfully");
+          setContactNumber("");
+          setPassword("");
+          setLastName("");
+        } catch (error) {
+          console.error("Error during update:", error);
+          if (error.response) {
+            setError(
+              error.response.data.message || "Server responded with an error"
+            );
+          } else if (error.request) {
+            setError("No response received from the server. Please try again.");
+          } else {
+            setError("An unexpected error occurred");
+          }
+        } finally {
+          setIsSubmitted(false); // Reset the submission flag to avoid repeated submissions
+        }
+      };
+
+      updateDetails();
+    }
+  }, [isSubmitted, userName, contactNumber, password, lastName, navigate]); // Dependencies for useEffect
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-
-    if (!contactNumber || !password || !lastName) {
-      setError("All fields are required");
-      return;
-    }
-
-    console.log("Submitting user details:", {
-      contactNumber,
-      password,
-      lastName,
-    });
-
-    setContactNumber("");
-    setPassword("");
-    setLastName("");
+    setIsSubmitted(true); // Trigger the effect to run the update
   };
 
   const handleCancel = () => {
-    // Reset form fields on cancel
     setContactNumber("");
     setPassword("");
     setLastName("");
+    setUserName(""); // Reset the userName field
     setError("");
+    setSuccessMessage("");
   };
 
   return (
-    <Card className="w-[300px] h-[430px]">
+    <Card className="w-[300px] h-[500px]">
       <CardHeader>
         <CardTitle>Update Details</CardTitle>
         <CardDescription>
-          You can change your contact number, password, or last name.
+          Update your contact number, password, or last name.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="grid w-full items-center gap-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label htmlFor="userName">Username</Label>
+              <Input
+                id="userName"
+                placeholder="Enter your username"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+              />
+            </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="contactNumber">Contact Number</Label>
               <Input
@@ -86,12 +148,16 @@ export default function AdminUpdateDialog() {
             </div>
           </div>
           {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
-
+          {successMessage && (
+            <p className="text-sm text-green-500 mt-2">{successMessage}</p>
+          )}
           <CardFooter className="flex justify-between mt-4">
             <Button variant="outline" type="button" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button type="submit">Save Changes</Button>
+            <Button onCLick={handleSubmit} type="submit">
+              Save Changes
+            </Button>
           </CardFooter>
         </form>
       </CardContent>

@@ -35,31 +35,17 @@ export default function LandingPage() {
           <School className="h-6 w-6 text-primary" />
           <h1 className="text-lg font-bold">School Management App</h1>
         </div>
-        {/* <nav className="flex items-center gap-6">
-          <a href="#features" className="text-sm font-medium hover:underline">
-            <Button>Admin</Button>
-          </a>
-          <a
-            href="#testimonials"
-            className="text-sm font-medium hover:underline"
-          >
-            <Button>Teachers</Button>
-          </a>
-          <a href="#cta" className="text-sm font-medium hover:underline">
-            <Button>Students</Button>
-          </a>
-        </nav> */}
       </header>
 
       {/* Hero Section */}
       <section className="flex flex-col items-center justify-center text-center  bg-gray-100">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl mt-4 md:text-6xl">
           Manage Your Entire School Here
         </h1>
         <p className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-3xl">
           Take control of your school
         </p>
-        <div className="mt-6 flex gap-4">
+        <div className="mt-4 flex gap-4 mb-4">
           <Link to="/signup">
             <Button>Signup</Button>
           </Link>

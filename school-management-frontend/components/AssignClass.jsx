@@ -21,7 +21,7 @@ export default function AdminUpdateDialog() {
     e.preventDefault();
     setError("");
 
-    if (!teacherFirstName || !className) {
+    if (!teacherFirstName && !className) {
       setError("All fields are required");
       return;
     }

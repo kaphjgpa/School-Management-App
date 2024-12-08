@@ -2,7 +2,10 @@ import SignIn from "../components/Signin";
 import SignUp from "../components/SignUp";
 import LandingPage from "../components/LandingPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AdminDashboard } from "../components/AdminDashboard";
+import { Admin } from "../components/Admin";
+import SearchTeacher from "../components/SearchTeacher";
+import SearchStudent from "../components/SearchStudent";
+import SearchClass from "../components/SearchClass";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,10 +30,34 @@ function App() {
       ),
     },
     {
-      path: "/admindashboard",
+      path: "/admin",
       element: (
         <>
-          <AdminDashboard />
+          <Admin />
+        </>
+      ),
+    },
+    {
+      path: "/admin/search-teachers",
+      element: (
+        <>
+          <SearchTeacher />
+        </>
+      ),
+    },
+    {
+      path: "/admin/search-students",
+      element: (
+        <>
+          <SearchStudent />
+        </>
+      ),
+    },
+    {
+      path: "/admin/search-classes",
+      element: (
+        <>
+          <SearchClass />
         </>
       ),
     },
