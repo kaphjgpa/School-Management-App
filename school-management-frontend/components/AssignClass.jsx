@@ -10,35 +10,69 @@ import {
   CardContent,
   CardFooter,
 } from "../src/components/ui/card";
+import axios from "axios";
 
 export default function AdminUpdateDialog() {
   const [teacherFirstName, setTeacherFirstName] = useState("");
-  const [className, setClassName] = useState("");
-
+  const [assignedClass, setAssignedClass] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage("");
 
-    if (!teacherFirstName && !className) {
+    if (!teacherFirstName) {
+      setError("Teacher's first name is required");
+      return;
+    }
+
+    if (!teacherFirstName && !assignedClass) {
       setError("All fields are required");
       return;
     }
 
-    console.log("Submitting user details:", {
-      teacherFirstName,
-      className,
-    });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Unauthorized: Please log in first.");
+        // Redirect to login page
+        navigate("/login");
+        return;
+      }
 
-    setTeacherFirstName("");
-    setClassName("");
+      const response = await axios.put(
+        "http://localhost:3000/api/admin/assign-class",
+        { teacherFirstName, assignedClass },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setSuccessMessage("Details updated successfully");
+      setTeacherFirstName("");
+      setAssignedClass("");
+    } catch (error) {
+      console.error("Arroe during assigning class:", error);
+      if (error.response) {
+        setError(
+          error.response.data.message || "Server responded with an error"
+        );
+      } else if (error.request) {
+        setError("No response received from the server. Please try again.");
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
   };
 
   const handleCancel = () => {
     // Reset form fields on cancel
     setTeacherFirstName("");
-    setClassName("");
+    setAssignedClass("");
   };
 
   return (
@@ -66,12 +100,15 @@ export default function AdminUpdateDialog() {
               <Input
                 id="lastName"
                 placeholder="Enter class name eg:- Two"
-                value={className}
-                onChange={(e) => setClassName(e.target.value)}
+                value={assignedClass}
+                onChange={(e) => setAssignedClass(e.target.value)}
               />
             </div>
           </div>
           {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+          {successMessage && (
+            <p className="text-sm text-green-500 mt-2">{successMessage}</p>
+          )}
 
           <CardFooter className="flex justify-between mt-4">
             <Button variant="outline" type="button" onClick={handleCancel}>
