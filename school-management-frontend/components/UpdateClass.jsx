@@ -10,48 +10,85 @@ import {
   CardContent,
   CardFooter,
 } from "../src/components/ui/card";
+import axios from "axios";
 
 export default function UpdateClass() {
-  const [contactNumber, setContactNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [className, setClassName] = useState("");
+  const [teacherName, setTeacherName] = useState("");
+  const [studentsFees, setStudentsFees] = useState("");
+  const [year, setYear] = useState("");
   const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setSuccessMessage("");
 
-    if (!contactNumber || !password || !lastName) {
+    if (!className && !teacherName && !studentsFees && !year) {
       setError("All fields are required");
       return;
     }
 
-    console.log("Submitting user details:", {
-      contactNumber,
-      password,
-      lastName,
-    });
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Unauthorized: Please log in first.");
+        // Redirect to login page
+        navigate("/login");
+        return;
+      }
 
-    setContactNumber("");
-    setPassword("");
-    setLastName("");
+      // Convert string inputs to numbers because backend need numbers type
+      const formattedData = {
+        className,
+        teacherName,
+        studentsFees: Number(studentsFees),
+        year: Number(year),
+      };
+
+      const response = await axios.put(
+        "http://localhost:3000/api/admin/update-class",
+        formattedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setSuccessMessage("Details updated successfully");
+      setClassName("");
+      setTeacherName("");
+      setStudentsFees("");
+      setYear("");
+    } catch (error) {
+      console.error("Arroe during assigning class:", error);
+      if (error.response) {
+        setError(
+          error.response.data.message || "Server responded with an error"
+        );
+      } else if (error.request) {
+        setError("No response received from the server. Please try again.");
+      } else {
+        setError("An unexpected error occurred");
+      }
+    }
   };
 
   const handleCancel = () => {
     // Reset form fields on cancel
-    setContactNumber("");
-    setPassword("");
-    setLastName("");
-    setError("");
+    setClassName("");
+    setTeacherName("");
+    setStudentsFees("");
+    setYear("");
   };
 
   return (
-    <Card className="w-[300px] h-[500px]">
+    <Card className="w-[300px]">
       <CardHeader>
         <CardTitle>Update Class</CardTitle>
-        <CardDescription>
-          You can change your contact number, password, or last name.
-        </CardDescription>
+        <CardDescription>Only you can update class</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit}>
@@ -60,41 +97,45 @@ export default function UpdateClass() {
               <Label htmlFor="contactNumber">Class Name</Label>
               <Input
                 id="contactNumber"
-                placeholder="Enter your contact number"
-                value={contactNumber}
-                onChange={(e) => setContactNumber(e.target.value)}
+                placeholder="Enter class name"
+                value={className}
+                onChange={(e) => setClassName(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">Year</Label>
+              <Label htmlFor="password">Teacher Name</Label>
               <Input
-                id="password"
-                type="password"
-                placeholder="Enter your new password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="teacherName"
+                type="teacherName"
+                placeholder="Enter Teacher Name"
+                value={teacherName}
+                onChange={(e) => setTeacherName(e.target.value)}
               />
             </div>
+
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="lastName">Student Fees</Label>
               <Input
-                id="lastName"
-                placeholder="Enter your last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                id="studentFees"
+                placeholder="Enter Fees for this Class"
+                value={studentsFees}
+                onChange={(e) => setStudentsFees(e.target.value)}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="lastName">Teacher Name</Label>
+              <Label htmlFor="lastName">Year</Label>
               <Input
-                id="lastName"
-                placeholder="Enter your last name"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                id="year"
+                placeholder="Enter Year 2024 - 2030"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
               />
             </div>
           </div>
           {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+          {successMessage && (
+            <p className="text-sm text-green-500 mt-2">{successMessage}</p>
+          )}
 
           <CardFooter className="flex justify-between mt-4">
             <Button variant="outline" type="button" onClick={handleCancel}>

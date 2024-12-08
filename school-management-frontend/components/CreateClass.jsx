@@ -32,13 +32,13 @@ export default function CreateClass() {
     }
 
     try {
-      // const token = localStorage.getItem("token");
-      // if (!token) {
-      //   setError("Unauthorized: Please log in first.");
-      //   // Redirect to login page
-      //   navigate("/login");
-      //   return;
-      // }
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setError("Unauthorized: Please log in first.");
+        // Redirect to login page
+        navigate("/login");
+        return;
+      }
 
       // Convert string inputs to numbers because backend need numbers type
       const formattedData = {
@@ -51,13 +51,13 @@ export default function CreateClass() {
 
       const response = await axios.post(
         "http://localhost:3000/api/admin/createclass",
-        formattedData
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${token}`,
-        //     "Content-Type": "application/json",
-        //   },
-        // }
+        formattedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
       setSuccessMessage("Details updated successfully");
       setClassName("");

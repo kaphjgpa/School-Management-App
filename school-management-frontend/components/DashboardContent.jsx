@@ -1,6 +1,7 @@
 import AdminUpdateDialog from "./AdminUpdateDialog";
 import AssignClass from "./AssignClass";
 import CreateClass from "./CreateClass";
+import DeleteClass from "./DeleteClass";
 import UpdateClass from "./UpdateClass";
 
 export function DashboardContent() {
@@ -14,7 +15,7 @@ export function DashboardContent() {
         <AssignClass />
         <CreateClass />
         <UpdateClass />
-        <AssignClass />
+        <DeleteClass />
       </div>
     </div>
   );
