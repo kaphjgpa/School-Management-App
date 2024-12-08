@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Input } from "../src/components/ui/input";
 import { Button } from "../src/components/ui/button";
-import { AdminSidebar } from "./AdminSidebar";
 import { ChevronLeft } from "lucide-react";
-
 import {
   Table,
   TableBody,
@@ -13,77 +11,97 @@ import {
   TableRow,
 } from "../src/components/ui/table";
 import { Link } from "react-router-dom";
-
-// Mock data for demonstration
-const teachers = [
-  {
-    id: 1,
-    name: "John Doe",
-    subject: "Mathematics",
-    email: "john@example.com",
-  },
-  { id: 2, name: "Jane Smith", subject: "English", email: "jane@example.com" },
-  { id: 3, name: "Bob Johnson", subject: "Science", email: "bob@example.com" },
-  {
-    id: 4,
-    name: "Alice Brown",
-    subject: "History",
-    email: "alice@example.com",
-  },
-];
+import axios from "axios";
 
 export default function SearchTeacher() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchResults, setSearchResults] = useState(teachers);
+  const [filter, setFilter] = useState("");
+  const [teachers, setTeachers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSearch = () => {
-    const results = teachers.filter(
-      (teacher) =>
-        teacher.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        teacher.email.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setSearchResults(results);
+  const handleSearch = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/admin/search-teacher`,
+        {
+          params: { filter },
+        }
+      );
+      setTeachers(response.data.teachers);
+    } catch (err) {
+      console.error(err);
+      setError("Failed to fetch teachers. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
-        <div className="container justify-center mx-auto p-4">
-          <Link to={"/admindashboard"}>
-            <ChevronLeft className="text-black" />
-          </Link>
-          <h1 className="text-2xl font-bold mb-4">Teacher Search</h1>
-          <div className="flex gap-2 mb-4">
-            <Input
-              type="text"
-              placeholder="Search by name, subject, or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-grow"
-            />
-            <Button onClick={handleSearch}>Search</Button>
-          </div>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Subject</TableHead>
-                <TableHead>Email</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {searchResults.map((teacher) => (
-                <TableRow key={teacher.id}>
-                  <TableCell>{teacher.name}</TableCell>
-                  <TableCell>{teacher.subject}</TableCell>
-                  <TableCell>{teacher.email}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+    <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
+      <div className="container mx-auto p-4">
+        <Link to={"/admindashboard"}>
+          <ChevronLeft className="text-black" />
+        </Link>
+        <h1 className="text-2xl font-bold mb-4">Teacher Search</h1>
+
+        {/* Search Input */}
+        <div className="flex gap-2 mb-4">
+          <Input
+            type="text"
+            placeholder="Search by email, first name, last name, or gender"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="flex-grow"
+            aria-label="Search input"
+          />
+          <Button onClick={handleSearch} disabled={loading}>
+            {loading ? (
+              <>
+                <span className="loader" /> Searching...
+              </>
+            ) : (
+              "Search"
+            )}
+          </Button>
         </div>
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        {/* Results Table */}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>First Name</TableHead>
+              <TableHead>Last Name</TableHead>
+              <TableHead>Gender</TableHead>
+              <TableHead>Contact Number</TableHead>
+              <TableHead>D.O.B</TableHead>
+              <TableHead>Email</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {teachers.length > 0 ? (
+              teachers.map((teacher) => (
+                <TableRow key={teacher._id}>
+                  <TableCell>{teacher.teacherFirstName || "N/A"}</TableCell>
+                  <TableCell>{teacher.teacherLastName || "N/A"}</TableCell>
+                  <TableCell>{teacher.gender || "N/A"}</TableCell>
+                  <TableCell>{teacher.contactNumber || "N/A"}</TableCell>
+                  <TableCell>{teacher.dateOfBirth || "N/A"}</TableCell>
+                  <TableCell>{teacher.userName || "N/A"}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6} className="text-center">
+                  No teachers found.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-    </>
+    </div>
   );
 }
