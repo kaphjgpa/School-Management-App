@@ -3,8 +3,8 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"; // shadcn/ui input
-
-import { BottomWarning } from "./BttomWarning";
+import { ChevronLeft } from "lucide-react";
+import { BottomWarningSignUp } from "./BottomWarningSignUp";
 import { Label } from "@/components/ui/label"; // shadcn/ui label
 
 export const SignUp = () => {
@@ -17,7 +17,7 @@ export const SignUp = () => {
   };
 
   const handleSubmit = async () => {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     try {
       // Parsing specific fields into numbers
       const parsedSalary = formData.salary
@@ -224,7 +224,16 @@ export const SignUp = () => {
   return (
     <div className="bg-gray-100 min-h-screen w-screen flex justify-center items-center">
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+        <div>
+          <Link
+            to="/"
+            className="flex items-center text-sm text-blue-800 hover:text-blue-600 ml-4"
+          >
+            <ChevronLeft />
+            Home
+          </Link>
+          <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+        </div>
         <label className="block mb-4">
           <Label className="mb-2">Select Role</Label>
           <select
@@ -244,7 +253,7 @@ export const SignUp = () => {
         >
           Submit
         </Button>
-        <BottomWarning
+        <BottomWarningSignUp
           label={"Already have an account?"}
           buttonText={"Sign in"}
           to={"/signin"}

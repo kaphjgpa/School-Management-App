@@ -45,7 +45,7 @@ export default function AdminUpdateDialog() {
           if (!token) {
             setError("Unauthorized: Please log in first.");
             // Redirect to login page
-            navigate("/login");
+            navigate("/signin");
             return;
           }
 

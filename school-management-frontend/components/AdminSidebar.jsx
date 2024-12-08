@@ -1,15 +1,23 @@
+import { useState } from "react";
 import { Home, Users, Backpack, School } from "lucide-react";
 import { cn } from "../src/lib/utils";
 import { Button } from "../src/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 const sidebarItems = [
-  { icon: Home, label: "Dashboard" },
-  { icon: Users, label: "Teachers" },
-  { icon: Backpack, label: "Students" },
-  { icon: School, label: "Classes" },
+  { icon: Home, label: "Dashboard", route: "/admin" },
+  { icon: Users, label: "Teachers", route: "/admindashboard/search-teachers" },
+  {
+    icon: Backpack,
+    label: "Students",
+    route: "/admindashboard/search-students",
+  },
+  { icon: School, label: "Classes", route: "/admindashboard/search-classes" },
 ];
-
 export function AdminSidebar() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col w-64 bg-white border-r pl-4 pr-4">
       <div className="flex items-center justify-center h-16 border-b">
@@ -21,9 +29,15 @@ export function AdminSidebar() {
             <li key={index}>
               <Button
                 variant="default"
+                onClick={() => {
+                  setActiveIndex(index);
+                  navigate(item.route);
+                }} // Set active index on click
                 className={cn(
                   "w-full justify-start",
-                  index === 0 && "bg-blue-500 "
+                  activeIndex === index
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-black"
                 )}
               >
                 <item.icon className="mr-2 h-4 w-4" />

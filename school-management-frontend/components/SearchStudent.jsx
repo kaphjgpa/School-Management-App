@@ -9,6 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "../src/components/ui/table";
+import { Link } from "react-router-dom";
+import { ChevronLeft } from "lucide-react";
 
 // Mock data for demonstration
 const teachers = [
@@ -46,6 +48,9 @@ export default function SearchStudent() {
     <>
       <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
         <div className="container justify-center mx-auto p-4">
+          <Link to={"/admindashboard"}>
+            <ChevronLeft className="text-black" />
+          </Link>
           <h1 className="text-2xl font-bold mb-4">Students Search</h1>
           <div className="flex gap-2 mb-4">
             <Input

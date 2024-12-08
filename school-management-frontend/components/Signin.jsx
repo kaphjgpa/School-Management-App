@@ -3,11 +3,19 @@ import axios from "axios";
 import { Button } from "@/components/ui/button"; // shadcn/ui button
 import { Input } from "@/components/ui/input"; // shadcn/ui input
 import { Label } from "@/components/ui/label"; // shadcn/ui label
+import { ChevronLeft } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 
 const roleApiEndpoints = {
   Admin: "http://localhost:3000/api/admin/signin",
   Teacher: "http://localhost:3000/api/teachers/signin",
   Student: "http://localhost:3000/api/students/signin",
+};
+
+const roleRedirectPaths = {
+  Admin: "/admindashboard",
+  Teacher: "/teacherdashboard",
+  Student: "/studentdashboard",
 };
 
 const SignIn = () => {
@@ -18,6 +26,7 @@ const SignIn = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -42,6 +51,10 @@ const SignIn = () => {
           // Store the token securely
           localStorage.setItem("token", token); // Store the token in localStorage
           alert(`${selectedRole} signed in successfully!`);
+
+          // Redirect to the appropriate dashboard based on the selected role
+          const redirectPath = roleRedirectPaths[selectedRole];
+          navigate(redirectPath); // Redirect using useNavigate
         } else {
           setError("Authentication failed. No token received.");
         }
@@ -59,7 +72,16 @@ const SignIn = () => {
   return (
     <div className="min-h-screen w-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
+        <div>
+          <Link
+            to="/"
+            className="flex items-center text-sm text-blue-800 hover:text-blue-600 ml-4"
+          >
+            <ChevronLeft />
+            Home
+          </Link>
+          <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role Selector */}
           <div>
@@ -74,7 +96,6 @@ const SignIn = () => {
               <option value="Student">Student</option>
             </select>
           </div>
-
           {/* User Name Input */}
           <div>
             <Label htmlFor="userName">Username</Label>
@@ -87,7 +108,6 @@ const SignIn = () => {
               required
             />
           </div>
-
           {/* Password Input */}
           <div>
             <Label htmlFor="password">Password</Label>
@@ -101,10 +121,8 @@ const SignIn = () => {
               required
             />
           </div>
-
           {/* Error Message */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
-
           {/* Submit Button */}
           <Button
             type="submit"
@@ -114,6 +132,13 @@ const SignIn = () => {
           >
             {loading ? "Signing In..." : "Sign In"}
           </Button>
+          <div className="flex justify-center">
+            <p>Create an account</p>
+            <Link className="underline" to={"/signup"}>
+              {" "}
+              SignUp
+            </Link>
+          </div>
         </form>
       </div>
     </div>

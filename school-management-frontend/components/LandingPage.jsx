@@ -47,7 +47,10 @@ export default function LandingPage() {
         </p>
         <div className="mt-4 flex gap-4 mb-4">
           <Link to="/signup">
-            <Button>Signup</Button>
+            <Button>SignUp</Button>
+          </Link>
+          <Link to="/signin">
+            <Button>SignIn</Button>
           </Link>
         </div>
       </section>

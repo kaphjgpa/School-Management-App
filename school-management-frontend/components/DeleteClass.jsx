@@ -61,9 +61,7 @@ export default function DeleteClass() {
     }
   };
   const handleCancel = () => {
-    // Reset form fields on cancel
-    setTeacherFirstName("");
-    setAssignedClass("");
+    setClassName("");
   };
 
   return (

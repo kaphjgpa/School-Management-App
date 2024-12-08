@@ -2,10 +2,12 @@ import SignIn from "../components/Signin";
 import SignUp from "../components/SignUp";
 import LandingPage from "../components/LandingPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Admin } from "../components/Admin";
+import { AdminDashboard } from "../components/AdminDashboard";
 import SearchTeacher from "../components/SearchTeacher";
 import SearchStudent from "../components/SearchStudent";
 import SearchClass from "../components/SearchClass";
+import AdminLayout from "../components/AdminLayout";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 function App() {
   const router = createBrowserRouter([
@@ -33,12 +35,22 @@ function App() {
       path: "/admin",
       element: (
         <>
-          <Admin />
+          <AdminLayout />
         </>
       ),
     },
     {
-      path: "/admin/search-teachers",
+      path: "/admindashboard",
+      element: (
+        <>
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        </>
+      ),
+    },
+    {
+      path: "/admindashboard/search-teachers",
       element: (
         <>
           <SearchTeacher />
@@ -46,7 +58,7 @@ function App() {
       ),
     },
     {
-      path: "/admin/search-students",
+      path: "/admindashboard/search-students",
       element: (
         <>
           <SearchStudent />
@@ -54,7 +66,7 @@ function App() {
       ),
     },
     {
-      path: "/admin/search-classes",
+      path: "/admindashboard/search-classes",
       element: (
         <>
           <SearchClass />
