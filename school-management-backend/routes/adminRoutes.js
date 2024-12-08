@@ -267,7 +267,7 @@ router.post("/createclass", authMiddleware, async (req, res) => {
 // Validate the Schema
 const updateClass = zod.object({
   year: zod.number().optional(),
-  studentFees: zod.number().optional(),
+  studentsFees: zod.number().optional(),
   teacherName: zod.string().optional(),
 });
 
@@ -357,7 +357,7 @@ router.get("/search-class", async (req, res) => {
       classes: classes.map((classItem) => ({
         className: classItem.className,
         teacherName: classItem.teacherName,
-        studentFees: classItem.studentFees,
+        studentFees: classItem.studentsFees,
         _id: classItem._id,
       })),
     });
@@ -411,13 +411,13 @@ router.get("/search-student", async (req, res) => {
     // Respond with formatted data
     res.json({
       students: students.map((studentsItems) => ({
-        userName: studentsItems.userName,
         studentFirstName: studentsItems.studentFirstName,
         studentLastName: studentsItems.studentLastName,
         gender: studentsItems.gender,
         contactNumber: studentsItems.contactNumber,
         feesPaid: studentsItems.feesPaid,
         dateOfBirth: studentsItems.dateOfBirth,
+        userName: studentsItems.userName,
         // for privacy reasons I don't want to show password
         _id: studentsItems._id,
       })),
@@ -501,7 +501,7 @@ router.put("/assign-class", async (req, res) => {
 
 router.get("/search-teacher", async (req, res) => {
   try {
-    const filter = req.query.filter || ""; // Default to an empty string
+    const filter = req.query.filter || "";
 
     // Search with regex for className or teacherName
     const teachers = await Teacher.find({
