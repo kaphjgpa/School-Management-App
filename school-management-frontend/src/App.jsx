@@ -1,107 +1,73 @@
-import SignIn from "../components/Signin";
-import SignUp from "../components/SignUp";
-import LandingPage from "../components/LandingPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { AdminDashboard } from "../components/AdminDashboard";
-import SearchTeacher from "../components/SearchTeacher";
-import SearchStudent from "../components/SearchStudent";
-import SearchClass from "../components/SearchClass";
+import { lazy, Suspense } from "react";
 import ProtectedRoute from "../components/ProtectedRoute";
-import { TeacherDashboard } from "../components/teacherComponents/TeacherDashboard";
-import StudentDashboard from "../components/studentComponents/StudentDashboard";
-import { Helmet } from "react-helmet";
 import NotFound from "../components/NotFound";
+
+// Lazy loading components
+const LandingPage = lazy(() => import("../components/LandingPage"));
+const SignIn = lazy(() => import("../components/SignIn"));
+const SignUp = lazy(() => import("../components/SignUp"));
+const AdminDashboard = lazy(() => import("../components/AdminDashboard"));
+const TeacherDashboard = lazy(() =>
+  import("../components/teacherComponents/TeacherDashboard")
+);
+const StudentDashboard = lazy(() =>
+  import("../components/studentComponents/StudentDashboard")
+);
+const SearchTeacher = lazy(() => import("../components/SearchTeacher"));
+const SearchStudent = lazy(() => import("../components/SearchStudent"));
+const SearchClass = lazy(() => import("../components/SearchClass"));
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        <>
-          <LandingPage />,
-        </>
-      ),
+      element: <LandingPage />,
       errorElement: <NotFound />,
     },
     {
       path: "/signup",
-      element: (
-        <>
-          <SignUp />
-        </>
-      ),
+      element: <SignUp />,
     },
     {
       path: "/signin",
-      element: (
-        <>
-          <SignIn />
-        </>
-      ),
+      element: <SignIn />,
     },
     {
       path: "/admindashboard",
       element: (
-        <>
-          <ProtectedRoute>
-            <AdminDashboard />
-          </ProtectedRoute>
-        </>
+        <ProtectedRoute>
+          <AdminDashboard />
+        </ProtectedRoute>
       ),
-    },
-    {
-      path: "/admindashboard/search-teachers",
-      element: (
-        <>
-          <SearchTeacher />
-        </>
-      ),
-    },
-    {
-      path: "/admindashboard/search-students",
-      element: (
-        <>
-          <SearchStudent />
-        </>
-      ),
-    },
-    {
-      path: "/admindashboard/search-classes",
-      element: (
-        <>
-          <SearchClass />
-        </>
-      ),
+      children: [
+        { path: "search-teachers", element: <SearchTeacher /> },
+        { path: "search-students", element: <SearchStudent /> },
+        { path: "search-classes", element: <SearchClass /> },
+      ],
     },
     {
       path: "/teacherdashboard",
       element: (
-        <>
-          <ProtectedRoute>
-            <TeacherDashboard />
-          </ProtectedRoute>
-        </>
+        <ProtectedRoute>
+          <TeacherDashboard />
+        </ProtectedRoute>
       ),
     },
     {
       path: "/studentdashboard",
       element: (
-        <>
-          <ProtectedRoute>
-            <StudentDashboard />
-          </ProtectedRoute>
-        </>
+        <ProtectedRoute>
+          <StudentDashboard />
+        </ProtectedRoute>
       ),
     },
   ]);
 
   return (
-    <>
-      <Helmet>
-        <title>Cuvette</title>
-      </Helmet>
+    <Suspense fallback={<div>Loading...</div>}>
       <RouterProvider router={router} />
-    </>
+    </Suspense>
   );
 }
 
