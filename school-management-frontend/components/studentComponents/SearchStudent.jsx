@@ -9,8 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "../../src/components/ui/table";
-import { Link } from "react-router-dom";
-import { ChevronLeft } from "lucide-react";
 import axios from "axios";
 
 export default function SearchStudent() {
@@ -42,10 +40,7 @@ export default function SearchStudent() {
   return (
     <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
       <div className="container mx-auto p-4">
-        <Link to={"/admindashboard"}>
-          <ChevronLeft className="text-black mb-4" />
-        </Link>
-        <h1 className="text-2xl font-bold mb-4">Students Search</h1>
+        <h1 className="text-2xl font-bold mb-4">Student Search</h1>
         <div className="flex gap-2 mb-4">
           <Input
             type="text"

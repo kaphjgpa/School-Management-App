@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input"; // shadcn/ui input
 import { Label } from "@/components/ui/label"; // shadcn/ui label
 import { ChevronLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Helmet } from "react-helmet";
 
 const roleApiEndpoints = {
   Admin: "https://cuvette-lpcv.onrender.com/api/admin/signin",
@@ -71,6 +72,9 @@ const SignIn = () => {
 
   return (
     <div className="min-h-screen w-screen flex items-center justify-center bg-gray-100">
+      <Helmet>
+        <title>Cuvette SignIn</title>
+      </Helmet>
       <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6">
         <div>
           <Link

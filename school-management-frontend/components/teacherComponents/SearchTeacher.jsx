@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Input } from "../../src/components/ui/input";
 import { Button } from "../../src/components/ui/button";
-import { ChevronLeft } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -10,7 +9,6 @@ import {
   TableHeader,
   TableRow,
 } from "../../src/components/ui/table";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function SearchTeacher() {

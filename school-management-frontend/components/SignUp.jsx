@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input"; // shadcn/ui input
 import { ChevronLeft } from "lucide-react";
 import { Label } from "@/components/ui/label"; // shadcn/ui label
+import { Helmet } from "react-helmet";
 
 export const SignUp = () => {
   const [userType, setUserType] = useState("admin");
@@ -224,6 +225,9 @@ export const SignUp = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen w-screen flex justify-center items-center">
+      <Helmet>
+        <title>Cuvette SignUp</title>
+      </Helmet>
       <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <div>
           <Link

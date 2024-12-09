@@ -10,6 +10,7 @@ import AdminLayout from "../components/AdminLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { TeacherDashboard } from "../components/teacherComponents/TeacherDashboard";
 import StudentDashboard from "../components/studentComponents/StudentDashboard";
+import { Helmet } from "react-helmet";
 
 function App() {
   const router = createBrowserRouter([
@@ -99,6 +100,9 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>Cuvette</title>
+      </Helmet>
       <RouterProvider router={router} />
     </>
   );

@@ -12,6 +12,7 @@ import {
 } from "../src/components/ui/table";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 export default function SearchTeacher() {
   const [filter, setFilter] = useState("");
@@ -40,6 +41,9 @@ export default function SearchTeacher() {
 
   return (
     <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
+      <Helmet>
+        <title>Teacher Search</title>
+      </Helmet>
       <div className="container mx-auto p-4">
         <Link to={"/admindashboard"}>
           <ChevronLeft className="text-black" />

@@ -12,6 +12,7 @@ import {
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 export default function SearchStudent() {
   const [filter, setFilter] = useState("");
@@ -41,6 +42,9 @@ export default function SearchStudent() {
 
   return (
     <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
+      <Helmet>
+        <title>Student Search</title>
+      </Helmet>
       <div className="container mx-auto p-4">
         <Link to={"/admindashboard"}>
           <ChevronLeft className="text-black mb-4" />
