@@ -86,7 +86,7 @@ router.post("/signup", async (req, res) => {
 // Signin Validation Schema (using Zod)
 const signinBody = zod.object({
   userName: zod.string().email(), // Ensure valid email format for username
-  password: zod.string().min(6), // Minimum length for password
+  password: zod.string().min(8), // Minimum length for password
 });
 
 // Signin Route

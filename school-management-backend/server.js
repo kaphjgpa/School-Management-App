@@ -41,7 +41,7 @@ app.options("*", cors());
 
 // Routes
 app.use("/api/admin", adminRoutes);
-// app.use(paginationMiddleware);
+app.use(paginationMiddleware);
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/students", studentRoutes);
 
