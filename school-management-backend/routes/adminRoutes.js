@@ -216,7 +216,7 @@ const addClassBody = zod.object({
   year: zod.number().int().min(2024).max(2030), // Added range validation for year
 });
 
-router.post("/createclass", authMiddleware, async (req, res) => {
+router.post("/create-class", authMiddleware, async (req, res) => {
   try {
     // Validate request body with Zod
     const validation = addClassBody.safeParse(req.body);
