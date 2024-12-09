@@ -5,10 +5,7 @@ const connectDB = require("./config/database");
 const teacherRoutes = require("./routes/teacherRoutes");
 const studentRoutes = require("./routes/studentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const {
-  authMiddleware,
-  paginationMiddleware,
-} = require("./middlewares/middleware");
+const { paginationMiddleware } = require("./middlewares/middleware");
 
 // Load environment variables
 dotenv.config();
@@ -25,7 +22,7 @@ app.use(express.json());
 // Enable CORS
 app.use(
   cors({
-    origin: "https://cuvette-xi.vercel.app/",
+    origin: "https://cuvette-xi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -34,10 +31,6 @@ app.use(
 
 // Handle preflight requests explicitly
 app.options("*", cors());
-
-// Apply middleware to all possible routes, which starts from three main routes
-// Uncomment if you have specific authentication logic in `authMiddleware`
-// app.use(authMiddleware);
 
 // Routes
 app.use("/api/admin", adminRoutes);
