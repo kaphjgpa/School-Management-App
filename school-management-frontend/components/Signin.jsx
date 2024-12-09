@@ -27,7 +27,7 @@ const SignIn = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   // Handle input change
   const handleInputChange = (e) => {
@@ -49,8 +49,7 @@ const SignIn = () => {
       if (response.status === 200) {
         const { token } = response.data;
         if (token) {
-          // Store the token securely
-          localStorage.setItem("token", token); // Store the token in localStorage
+          localStorage.setItem("token", token);
           alert(`${selectedRole} signed in successfully!`);
 
           // Redirect to the appropriate dashboard based on the selected role
@@ -61,7 +60,6 @@ const SignIn = () => {
         }
       }
     } catch (error) {
-      // Handle sign-in error
       const errorMessage =
         error.response?.data?.message || "Sign-in failed. Please try again.";
       setError(errorMessage);
