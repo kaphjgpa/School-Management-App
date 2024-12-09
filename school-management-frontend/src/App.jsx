@@ -6,17 +6,22 @@ import { AdminDashboard } from "../components/AdminDashboard";
 import SearchTeacher from "../components/SearchTeacher";
 import SearchStudent from "../components/SearchStudent";
 import SearchClass from "../components/SearchClass";
-import AdminLayout from "../components/AdminLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 import { TeacherDashboard } from "../components/teacherComponents/TeacherDashboard";
 import StudentDashboard from "../components/studentComponents/StudentDashboard";
 import { Helmet } from "react-helmet";
+import NotFound from "../components/NotFound";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <LandingPage />,
+      element: (
+        <>
+          <LandingPage />,
+        </>
+      ),
+      errorElement: <NotFound />,
     },
     {
       path: "/signup",
@@ -31,14 +36,6 @@ function App() {
       element: (
         <>
           <SignIn />
-        </>
-      ),
-    },
-    {
-      path: "/admin",
-      element: (
-        <>
-          <AdminLayout />
         </>
       ),
     },
