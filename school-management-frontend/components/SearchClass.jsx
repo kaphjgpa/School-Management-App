@@ -24,7 +24,7 @@ export default function SearchClass() {
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/admin/search-class`,
+        `https://cuvette-lpcv.onrender.com/api/admin/search-class`,
         {
           params: { filter },
         }

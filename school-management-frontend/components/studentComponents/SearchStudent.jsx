@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Input } from "../src/components/ui/input";
-import { Button } from "../src/components/ui/button";
+import { Input } from "../../src/components/ui/input";
+import { Button } from "../../src/components/ui/button";
 import {
   Table,
   TableBody,
@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../src/components/ui/table";
+} from "../../src/components/ui/table";
 import { Link } from "react-router-dom";
 import { ChevronLeft } from "lucide-react";
 import axios from "axios";
@@ -24,7 +24,7 @@ export default function SearchStudent() {
     setError("");
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/admin/search-student`,
+        `https://cuvette-lpcv.onrender.com/api/admin/search-student`,
         {
           params: { filter },
         }
