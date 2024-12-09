@@ -13,7 +13,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function TeacherDelete() {
+export default function StudentDelete() {
   const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -37,7 +37,7 @@ export default function TeacherDelete() {
       }
 
       const response = await axios.delete(
-        `https://cuvette-lpcv.onrender.com/api/teachers/delete-teacher/${userName}`,
+        `https://cuvette-lpcv.onrender.com/api/students/delete-student/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
