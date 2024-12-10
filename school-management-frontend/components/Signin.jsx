@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Button } from "@/components/ui/button"; // shadcn/ui button
-import { Input } from "@/components/ui/input"; // shadcn/ui input
-import { Label } from "@/components/ui/label"; // shadcn/ui label
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { ChevronLeft } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 const roleApiEndpoints = {
@@ -54,7 +54,7 @@ const SignIn = () => {
 
           // Redirect to the appropriate dashboard based on the selected role
           const redirectPath = roleRedirectPaths[selectedRole];
-          navigate(redirectPath); // Redirect using useNavigate
+          navigate(redirectPath);
         } else {
           setError("Authentication failed. No token received.");
         }
@@ -110,7 +110,6 @@ const SignIn = () => {
               required
             />
           </div>
-          {/* Password Input */}
           <div>
             <Label htmlFor="password">Password</Label>
             <Input
