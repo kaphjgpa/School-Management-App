@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"; // shadcn/ui label
 import { Helmet } from "react-helmet";
 
 export const SignUp = () => {
+  const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState("admin");
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -17,19 +18,10 @@ export const SignUp = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
     try {
-      // Parsing specific fields into numbers
-      // const parsedSalary = formData.salary
-      //   ? Number(formData.salary)
-      //   : undefined;
-      // const parsedFeesPaid = formData.feesPaid
-      //   ? Number(formData.feesPaid)
-      //   : undefined;
-      // const parsedContactNumber = formData.contactNumber
-      //   ? Number(formData.contactNumber)
-      //   : undefined;
-
       // Creating a new object with parsed values
       const processedFormData = {
         ...formData,
@@ -67,6 +59,8 @@ export const SignUp = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error during submission:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -251,12 +245,16 @@ export const SignUp = () => {
             <option value="student">Student</option>
           </select>
         </label>
-        <form className="space-y-4">{renderFormFields()}</form>
+        <form onClick={handleSubmit} className="space-y-4">
+          {renderFormFields()}
+        </form>
         <Button
-          onClick={handleSubmit}
           className="mt-6 w-full  bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-md shadow-md"
+          type="submit"
+          disabled={loading}
+          variant={loading ? "ghost" : "default"}
         >
-          Submit
+          {loading ? "Signing Up..." : "Sign Up"}
         </Button>
         <div className="flex justify-center">
           <p>Already have an account</p>

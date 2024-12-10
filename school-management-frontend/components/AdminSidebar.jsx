@@ -5,7 +5,7 @@ import { Button } from "../src/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
 const sidebarItems = [
-  { icon: Home, label: "Dashboard", route: "/admin" },
+  { icon: Home, label: "Dashboard", route: "/admindashboard" },
   { icon: Users, label: "Teachers", route: "/admindashboard/search-teachers" },
   {
     icon: Backpack,
