@@ -219,11 +219,11 @@ router.put("/update-details", authMiddleware, async (req, res) => {
 // Mount Class here because Admin can only create classes
 // Zod schema for request validation
 const addClassBody = zod.object({
-  className: zod.string(), // Adding validation for length
-  teacherName: zod.string().min(3).max(255), // Corrected key to match the schema
-  maxStudents: zod.number().int().positive(), // Ensure it's a positive integer
-  studentsFees: zod.number().int().positive(), // Corrected casing to match the schema
-  year: zod.number().int().min(2024).max(2030), // Added range validation for year
+  className: zod.string(),
+  teacherName: zod.string().min(3).max(255),
+  maxStudents: zod.number().int().positive().min(30).max(30),
+  studentsFees: zod.number().int().positive(),
+  year: zod.number().int().min(2024).max(2030),
 });
 
 router.post("/create-class", authMiddleware, async (req, res) => {
@@ -241,7 +241,7 @@ router.post("/create-class", authMiddleware, async (req, res) => {
 
     // Check if the class already exists
     const existingClass = await Class.findOne({
-      classname: className,
+      className: { $regex: new RegExp(`^${className}$`, "i") }, // It check for the case sensitive like :- "One" or "one"
     });
     if (existingClass) {
       return res.status(409).json({
@@ -251,10 +251,10 @@ router.post("/create-class", authMiddleware, async (req, res) => {
 
     // Create the new class
     const createClass = await Class.create({
-      className: req.body.className, // Ensure consistent casing
-      teacherName: req.body.teacherName, // Adjusted key to match the schema
+      className: req.body.className,
+      teacherName: req.body.teacherName,
       maxStudents: req.body.maxStudents,
-      studentsFees: req.body.studentsFees, // Adjusted casing to match the schema
+      studentsFees: req.body.studentsFees,
       year: req.body.year,
     });
 
@@ -368,6 +368,8 @@ router.get("/search-class", paginationMiddleware, async (req, res) => {
         className: classItem.className,
         teacherName: classItem.teacherName,
         studentFees: classItem.studentsFees,
+        maxStudents: classItem.maxStudents,
+        year: classItem.year,
         _id: classItem._id,
       })),
     });
@@ -400,19 +402,19 @@ router.get("/search-student", async (req, res) => {
         {
           studentFirstName: {
             $regex: filter,
-            $options: "i", // Case-insensitive search
+            $options: "i",
           },
         },
         {
           studentLastName: {
             $regex: filter,
-            $options: "i", // Case-insensitive search
+            $options: "i",
           },
         },
         {
           gender: {
             $regex: filter,
-            $options: "i", // Case-insensitive search
+            $options: "i",
           },
         },
       ],

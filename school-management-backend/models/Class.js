@@ -4,6 +4,7 @@ const classSchema = new mongoose.Schema(
   {
     className: {
       type: String,
+      unique: true,
       required: true,
       trim: true,
       lowercase: true,
