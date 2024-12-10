@@ -47,7 +47,7 @@ export default function StudentDelete() {
       );
 
       setSuccessMessage(response.data.message);
-      setUserName(""); // Clear the input field
+      setUserName("");
       navigate("/");
     } catch (error) {
       console.error("Error deleting teacher:", error);

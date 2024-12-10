@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label"; // shadcn/ui label
 import { Helmet } from "react-helmet";
 
 export const SignUp = () => {
-  const [loading, setLoading] = useState(false);
   const [userType, setUserType] = useState("admin");
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -20,7 +19,6 @@ export const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true);
     try {
       // Creating a new object with parsed values
       const processedFormData = {
@@ -59,8 +57,6 @@ export const SignUp = () => {
       console.log(response.data);
     } catch (error) {
       console.error("Error during submission:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -251,9 +247,7 @@ export const SignUp = () => {
         <Button
           className="mt-6 w-full  bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-md shadow-md"
           type="submit"
-        >
-          {loading ? "Signing Up..." : "Sign Up"}
-        </Button>
+        ></Button>
         <div className="flex justify-center">
           <p>Already have an account</p>
           <Link className="underline" to={"/signin"}>

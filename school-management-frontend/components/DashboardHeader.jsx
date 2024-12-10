@@ -10,7 +10,7 @@ import {
 export function DashboardHeader() {
   const handleSignOut = () => {
     localStorage.removeItem("token");
-    window.location.href = "/";
+    window.location.href = "/signin";
   };
   return (
     <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 shadow">
