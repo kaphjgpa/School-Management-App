@@ -19,7 +19,8 @@ export default function StudentDelete() {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleDelete = async () => {
+  const handleDelete = async (event) => {
+    event.preventDefault();
     setError("");
     setSuccessMessage("");
 
@@ -37,7 +38,7 @@ export default function StudentDelete() {
       }
 
       const response = await axios.delete(
-        `http://localhost:3000/api/students/delete-student/${userName}`,
+        `https://cuvette-lpcv.onrender.com/api/students/delete-student/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,6 +48,7 @@ export default function StudentDelete() {
 
       setSuccessMessage(response.data.message);
       setUserName(""); // Clear the input field
+      navigate("/");
     } catch (error) {
       console.error("Error deleting teacher:", error);
       if (error.response) {

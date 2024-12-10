@@ -19,7 +19,8 @@ export default function TeacherDelete() {
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleDelete = async () => {
+  const handleDelete = async (event) => {
+    event.preventDefault(); // Prevent default form submission
     setError("");
     setSuccessMessage("");
 
@@ -32,12 +33,11 @@ export default function TeacherDelete() {
       const token = localStorage.getItem("token");
       if (!token) {
         setError("Unauthorized: Please log in first.");
-        navigate("/login");
         return;
       }
 
       const response = await axios.delete(
-        `http://localhost:3000/api/teachers/delete-teacher/${userName}`,
+        `https://cuvette-lpcv.onrender.com/api/teachers/delete-teacher/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +46,8 @@ export default function TeacherDelete() {
       );
 
       setSuccessMessage(response.data.message);
-      setUserName(""); // Clear the input field
+      setUserName("");
+      navigate("/");
     } catch (error) {
       console.error("Error deleting teacher:", error);
       if (error.response) {
@@ -60,6 +61,7 @@ export default function TeacherDelete() {
       }
     }
   };
+
   const handleCancel = () => {
     setUserName("");
   };
@@ -77,7 +79,7 @@ export default function TeacherDelete() {
               <Label htmlFor="lastName">Enter your Email to confirm</Label>
               <Input
                 id="className"
-                placeholder="Enter class name"
+                placeholder="Enter your email"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
               />
@@ -92,9 +94,7 @@ export default function TeacherDelete() {
             <Button variant="outline" type="button" onClick={handleCancel}>
               Cancel
             </Button>
-            <Button onClick={handleDelete} type="submit">
-              Save Changes
-            </Button>
+            <Button type="submit">Delete</Button>
           </CardFooter>
         </form>
       </CardContent>

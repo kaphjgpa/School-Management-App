@@ -50,7 +50,7 @@ export default function CreateClass() {
       };
 
       const response = await axios.post(
-        "http://localhost:3000/api/admin/create-class",
+        "https://cuvette-lpcv.onrender.com/api/admin/create-class",
         formattedData,
         {
           headers: {
