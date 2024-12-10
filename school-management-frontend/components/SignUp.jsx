@@ -247,7 +247,9 @@ export const SignUp = () => {
         <Button
           className="mt-6 w-full  bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-md shadow-md"
           type="submit"
-        ></Button>
+        >
+          SignUp
+        </Button>
         <div className="flex justify-center">
           <p>Already have an account</p>
           <Link className="underline" to={"/signin"}>
