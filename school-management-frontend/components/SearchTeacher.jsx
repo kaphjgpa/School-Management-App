@@ -84,8 +84,8 @@ export default function SearchTeacher() {
             <TableRow>
               <TableHead>First Name</TableHead>
               <TableHead>Last Name</TableHead>
-              <TableHead>Gender</TableHead>
               <TableHead>Salary</TableHead>
+              <TableHead>Gender</TableHead>
               <TableHead>Contact Number</TableHead>
               <TableHead>D.O.B</TableHead>
               <TableHead>Email</TableHead>
