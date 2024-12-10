@@ -13,8 +13,8 @@ export const SignUp = () => {
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
 
@@ -251,8 +251,6 @@ export const SignUp = () => {
         <Button
           className="mt-6 w-full  bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-md shadow-md"
           type="submit"
-          disabled={loading}
-          variant={loading ? "ghost" : "default"}
         >
           {loading ? "Signing Up..." : "Sign Up"}
         </Button>

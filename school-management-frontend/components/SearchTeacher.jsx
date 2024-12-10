@@ -78,6 +78,7 @@ export default function SearchTeacher() {
               <TableHead>First Name</TableHead>
               <TableHead>Last Name</TableHead>
               <TableHead>Gender</TableHead>
+              <TableHead>Salary</TableHead>
               <TableHead>Contact Number</TableHead>
               <TableHead>D.O.B</TableHead>
               <TableHead>Email</TableHead>
@@ -89,6 +90,7 @@ export default function SearchTeacher() {
                 <TableRow key={teacher._id}>
                   <TableCell>{teacher.teacherFirstName || "N/A"}</TableCell>
                   <TableCell>{teacher.teacherLastName || "N/A"}</TableCell>
+                  <TableCell>{teacher.salary || "N/A"}</TableCell>
                   <TableCell>{teacher.gender || "N/A"}</TableCell>
                   <TableCell>{teacher.contactNumber || "N/A"}</TableCell>
                   <TableCell>{teacher.dateOfBirth || "N/A"}</TableCell>
