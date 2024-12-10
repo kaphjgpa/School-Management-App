@@ -46,7 +46,7 @@ export default function DeleteClass() {
       );
 
       setSuccessMessage(response.data.message);
-      setClassName(""); // Clear the input field
+      setClassName("");
     } catch (error) {
       console.error("Error deleting class:", error);
       if (error.response) {
