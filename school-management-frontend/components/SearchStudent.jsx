@@ -39,6 +39,11 @@ export default function SearchStudent() {
       setLoading(false);
     }
   };
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
@@ -56,6 +61,7 @@ export default function SearchStudent() {
             placeholder="Search by name, subject, or email"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="flex-grow"
           />
           <Button onClick={handleSearch} disabled={loading}>

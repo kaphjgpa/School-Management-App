@@ -43,13 +43,15 @@ export default function SearchClass() {
     }
   };
 
-  useEffect(() => {
-    fetchClasses();
-  }, [page, limit]); // Refetch when page or limit changes
-
   const handleSearch = () => {
     setPage(1); // Reset to the first page on a new search
     fetchClasses();
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
   };
 
   return (
@@ -65,6 +67,7 @@ export default function SearchClass() {
             placeholder="Search by class name, teacher name, or fees"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="flex-grow"
           />
           <Button onClick={handleSearch} disabled={loading}>

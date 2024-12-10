@@ -39,6 +39,12 @@ export default function SearchTeacher() {
     }
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <div className="flex h-screen w-screen bg-gray-100 dark:bg-gray-900">
       <Helmet>
@@ -57,6 +63,7 @@ export default function SearchTeacher() {
             placeholder="Search by email, first name, last name, or gender"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
+            onKeyPress={handleKeyPress}
             className="flex-grow"
             aria-label="Search input"
           />
