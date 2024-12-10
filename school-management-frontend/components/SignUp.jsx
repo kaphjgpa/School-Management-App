@@ -241,12 +241,11 @@ export const SignUp = () => {
             <option value="student">Student</option>
           </select>
         </label>
-        <form onClick={handleSubmit} className="space-y-4">
-          {renderFormFields()}
-        </form>
+        <form className="space-y-4">{renderFormFields()}</form>
         <Button
           className="mt-6 w-full  bg-blue-800 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-md shadow-md"
           type="submit"
+          onClick={handleSubmit}
         >
           SignUp
         </Button>
