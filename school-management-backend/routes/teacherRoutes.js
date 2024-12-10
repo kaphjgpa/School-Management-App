@@ -165,18 +165,25 @@ router.put("/update-details", authMiddleware, async (req, res) => {
       return res.status(401).json({ message: "Invalid or expired token" });
     }
 
-    // Use the userName (or other unique field) from the request body to identify the teacher
-    const { userName } = req.body;
+    // Use the userName (or other unique field) from the request body to identify the admin
+    const { userName, password, ...otherUpdates } = req.body; // Extract password separately
     if (!userName) {
       return res
         .status(400)
         .json({ message: "userName is required for updating details" });
     }
 
+    // Hash the password if it's present in the request body
+    let updatedFields = { ...otherUpdates }; // All other updates
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedFields.password = hashedPassword;
+    }
+
     // Find and update the teacher
     const updatedTeacher = await Teacher.findOneAndUpdate(
       { userName }, // Find teacher by userName
-      { $set: req.body }, // Update with the fields in the request body
+      { $set: updatedFields }, // Update with the fields in the request body
       { new: true, runValidators: true }
     );
 
@@ -275,7 +282,7 @@ router.delete("/delete-teacher/:userName", async (req, res) => {
 
     res.status(200).json({
       message: "Teacher profile deleted successfully",
-      student: deletedTeacher,
+      teacher: deletedTeacher,
     });
   } catch (error) {
     console.error("Error deleting teacher:", error);

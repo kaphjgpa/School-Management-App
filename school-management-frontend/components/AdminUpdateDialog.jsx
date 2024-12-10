@@ -50,7 +50,7 @@ export default function AdminUpdateDialog() {
           }
 
           const response = await axios.put(
-            "https://cuvette-lpcv.onrender.com/api/admin/update-details",
+            "http://localhost:3000/api/admin/update-details",
             { userName, contactNumber, password, lastName },
             {
               headers: {

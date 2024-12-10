@@ -195,17 +195,24 @@ router.put("/update-details", async (req, res) => {
     }
 
     // Use the userName (or other unique field) from the request body to identify the student
-    const { userName } = req.body;
+    const { userName, password, ...otherUpdates } = req.body; // Extract password separately
     if (!userName) {
       return res
         .status(400)
         .json({ message: "userName is required for updating details" });
     }
 
+    // Hash the password if it's present in the request body
+    let updatedFields = { ...otherUpdates }; // All other updates
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      updatedFields.password = hashedPassword;
+    }
+
     // Find and update the student
     const updatedStudent = await Student.findOneAndUpdate(
       { userName }, // Find student by userName
-      { $set: req.body }, // Update with the fields in the request body
+      { $set: updatedFields }, // Update with the fields in the request body
       { new: true, runValidators: true }
     );
 

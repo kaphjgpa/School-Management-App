@@ -191,7 +191,7 @@ router.put("/update-details", authMiddleware, async (req, res) => {
     // Find and update the admin
     const updatedAdmin = await Admin.findOneAndUpdate(
       { userName }, // Find admin by userName
-      { $set: updatedFields }, // Update with the hashed password and other fields
+      { $set: updatedFields }, // Update with the fields in the request body
       { new: true, runValidators: true }
     );
 

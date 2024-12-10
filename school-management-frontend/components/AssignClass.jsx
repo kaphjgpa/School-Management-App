@@ -43,7 +43,7 @@ export default function AdminUpdateDialog() {
       }
 
       const response = await axios.put(
-        "https://cuvette-lpcv.onrender.com/api/admin/assign-class",
+        "http://localhost:3000/api/admin/assign-class",
         { teacherFirstName, assignedClass },
         {
           headers: {

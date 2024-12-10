@@ -57,7 +57,7 @@ export default function TeacherUpdate() {
           };
 
           const response = await axios.put(
-            "https://cuvette-lpcv.onrender.com/api/students/update-details",
+            "http://localhost:3000/api/students/update-details",
             formattedData,
             {
               headers: {
