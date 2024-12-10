@@ -33,8 +33,8 @@ app.use(
 app.options("*", cors());
 
 // Routes
-app.use("/api/admin", adminRoutes);
 app.use(paginationMiddleware);
+app.use("/api/admin", adminRoutes);
 app.use("/api/teachers", teacherRoutes);
 app.use("/api/students", studentRoutes);
 

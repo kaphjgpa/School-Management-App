@@ -337,7 +337,7 @@ router.put("/update-class", authMiddleware, async (req, res) => {
 //--------------------------------------------------------------------------------------------------------------------
 
 //This is the search logic behind classes
-router.get("/search-class", async (req, res) => {
+router.get("/search-class", paginationMiddleware, async (req, res) => {
   try {
     const filter = req.query.filter || ""; // Default to an empty string
 
