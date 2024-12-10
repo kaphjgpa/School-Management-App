@@ -87,6 +87,8 @@ export default function SearchClass() {
               <TableHead>Class Name</TableHead>
               <TableHead>Teacher Name</TableHead>
               <TableHead>Student Fees</TableHead>
+              <TableHead>Max Students</TableHead>
+              <TableHead>Year</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -96,6 +98,8 @@ export default function SearchClass() {
                   <TableCell>{cls.className || "N/A"}</TableCell>
                   <TableCell>{cls.teacherName || "N/A"}</TableCell>
                   <TableCell>{cls.studentsFees || "N/A"}</TableCell>
+                  <TableCell>{cls.maxStudents || "N/A"}</TableCell>
+                  <TableCell>{cls.year || "N/A"}</TableCell>
                 </TableRow>
               ))
             ) : (
