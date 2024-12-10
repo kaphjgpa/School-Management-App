@@ -8,7 +8,10 @@ const { JWT_SECRET } = require("../config");
 const { Class } = require("../models/Class");
 const { Student } = require("../models/Student");
 const { Teacher } = require("../models/Teacher");
-const { authMiddleware } = require("../middlewares/middleware");
+const {
+  authMiddleware,
+  paginationMiddleware,
+} = require("../middlewares/middleware");
 
 // Signup Validation Schema
 const signupBody = zod.object({
