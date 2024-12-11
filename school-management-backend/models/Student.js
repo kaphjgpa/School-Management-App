@@ -51,7 +51,7 @@ const studentSchema = new mongoose.Schema({
     trim: true,
     minlength: 8,
   },
-  class: {
+  className: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Class",
     required: true,

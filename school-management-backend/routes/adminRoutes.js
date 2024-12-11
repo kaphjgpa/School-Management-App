@@ -413,7 +413,7 @@ router.get("/search-student", async (req, res) => {
         },
         {
           gender: {
-            $regex: filter,
+            $regex: `^${filter}$`,
             $options: "i",
           },
         },
@@ -538,7 +538,7 @@ router.get("/search-teacher", async (req, res) => {
         },
         {
           gender: {
-            $regex: filter,
+            $regex: `^${filter}$`,
             $options: "i", // Case-insensitive search
           },
         },
@@ -593,6 +593,34 @@ router.delete("/delete-class/:className", async (req, res) => {
     res.status(500).json({
       message: "An error occurred while deleting the class",
     });
+  }
+});
+
+// Trying to add Class Analytics route
+router.get("/class-analytics", async (req, res) => {
+  try {
+    // Retrieve all classes from the database
+    const classAnalytics = await Class.find({});
+
+    // Transform the class data before sending the response
+    const transformedData = classAnalytics.map((objectItems) => ({
+      className: objectItems.className,
+      teacherName: objectItems.teacherName,
+      studentFees: objectItems.studentsFees,
+      maxStudents: objectItems.maxStudents,
+      year: objectItems.year,
+      _id: objectItems._id,
+      studentList: objectItems.studentList,
+    }));
+
+    // Send the transformed data as a JSON response
+    res.json({
+      classObject: transformedData,
+    });
+  } catch (e) {
+    // Error handling: log and send error response to the client
+    console.error("Error fetching class analytics:", e);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 

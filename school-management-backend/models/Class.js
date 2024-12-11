@@ -49,7 +49,7 @@ const classSchema = new mongoose.Schema(
     },
     studentList: [
       {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: "Student",
         index: true,
         validate: {
@@ -60,8 +60,8 @@ const classSchema = new mongoose.Schema(
         },
       },
     ],
-  },
-  { timestamps: true }
+  }
+  // { timestamps: true }
 );
 
 // Virtual property to calculate available slots

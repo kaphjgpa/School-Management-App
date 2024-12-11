@@ -17,10 +17,8 @@ const signupBody = zod.object({
   feesPaid: zod.number().min(5),
   contactNumber: zod.number().min(10),
   password: zod.string().min(8, "Password must be at least 8 characters long"),
-  className: zod.string(), // Use className instead of class number
+  className: zod.string(),
 });
-
-// Signup Route
 router.post("/signup", async (req, res) => {
   try {
     // Validate the request body
@@ -63,6 +61,11 @@ router.post("/signup", async (req, res) => {
 
     // Increment the currentStudents in the Class document
     classDocument.currentStudents += 1;
+
+    const fullName = `${req.body.studentFirstName} ${req.body.studentLastName}`;
+
+    // Add the student to the class' studentList (ensure no duplicates)
+    classDocument.studentList.addToSet(fullName); // You can also add user ID instead of username
     await classDocument.save();
 
     // Create a new Student account and assign the class
@@ -74,15 +77,15 @@ router.post("/signup", async (req, res) => {
       dateOfBirth: req.body.dateOfBirth,
       contactNumber: req.body.contactNumber,
       feesPaid: req.body.feesPaid,
-      password: req.body.password, // You should hash the password (see notes)
-      class: classDocument._id, // Assign the class ObjectId to the student
+      password: req.body.password, // You should hash the password here (see note below)
+      className: classDocument._id, // Assign the class ObjectId to the student
     });
 
     // Generate a JWT token
     const token = jwt.sign(
       { userId: user._id },
       JWT_SECRET,
-      { expiresIn: "1h" } // Optional: Set token expiration
+      { expiresIn: "12h" } // Optional: Set token expiration
     );
 
     res.status(201).json({
