@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { GenderCount } from "./GenderCount";
 
 export default function ClassAnalytics() {
   const [classes, setClasses] = useState([]);
@@ -52,7 +53,7 @@ export default function ClassAnalytics() {
   }
 
   return (
-    <div className="h-screen w-screen mx-auto p-4">
+    <div className="h-screen w-screen mx-auto p-4 ">
       <Link to={"/admindashboard"}>
         <ChevronLeft className="text-black mb-4" />
       </Link>
@@ -144,6 +145,12 @@ export default function ClassAnalytics() {
             </CardContent>
           </Card>
         ))}
+      </div>
+      <div className=" mt-10 ml-4 align-center justify-center border-black  ">
+        <h2 className="text-3xl font-bold mb-6">
+          Gender Distribution in School
+        </h2>
+        <GenderCount />
       </div>
     </div>
   );
