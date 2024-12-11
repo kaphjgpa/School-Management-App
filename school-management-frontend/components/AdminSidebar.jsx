@@ -13,6 +13,11 @@ const sidebarItems = [
     route: "/admindashboard/search-students",
   },
   { icon: School, label: "Classes", route: "/admindashboard/search-classes" },
+  {
+    icon: School,
+    label: "Class Analytics",
+    route: "/admindashboard/class-analytics",
+  },
 ];
 export function AdminSidebar() {
   const [activeIndex, setActiveIndex] = useState(0);

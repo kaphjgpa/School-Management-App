@@ -11,6 +11,7 @@ import { TeacherDashboard } from "../components/teacherComponents/TeacherDashboa
 import StudentDashboard from "../components/studentComponents/StudentDashboard";
 import { Helmet } from "react-helmet";
 import NotFound from "../components/NotFound";
+import ClassAnalytics from "../components/ClassAnalytics";
 
 function App() {
   const router = createBrowserRouter([
@@ -93,12 +94,22 @@ function App() {
         </>
       ),
     },
+    {
+      path: "/admindashboard/class-analytics",
+      element: (
+        <>
+          <ProtectedRoute>
+            <ClassAnalytics />
+          </ProtectedRoute>
+        </>
+      ),
+    },
   ]);
 
   return (
     <>
       <Helmet>
-        <title>Cuvette</title>
+        <title>Cuvette Assignment</title>
       </Helmet>
       <RouterProvider router={router} />
     </>

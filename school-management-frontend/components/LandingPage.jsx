@@ -65,27 +65,27 @@ export default function LandingPage() {
             <FeatureCard
               Icon={FileJson2}
               title="CRUD Operation on all Models"
-              description="Yours can perform CRUD operations on their profiles."
+              description="Users can perform CRUD operations on their profiles."
             />
             <FeatureCard
               Icon={FileKey2}
               title="Secure & Private"
-              description="I have use Middleware in every route also I have you the bcrypt library to that your password are hassed in MongoDB"
+              description="I have used Middleware in every route also I have integrated the bcrypt library to hash users password and store in MongoDB"
             />
             <FeatureCard
               Icon={OctagonMinus}
               title="Students Limit"
-              description="I have implemented a limiting logic in the backend, so that not more 30 students are allowed to enter in one class"
+              description="I have implemented a restriction in the backend to ensure that no more than 30 students can enroll in a single class."
             />
             <FeatureCard
               Icon={Zap}
               title="One Admin Only"
-              description="I have implemented only single admin approach in this application, multiple can't be created. This logic first checks first if admin is created in database"
+              description="I have implemented a single-admin approach in this application, meaning multiple admins cannot be created. The logic first verifies if an admin already exists in the database."
             />
             <FeatureCard
               Icon={TrendingUpDown}
               title="Dynamic input fields "
-              description="In this application I have implemented a dynamic input field based on the model"
+              description="In this application, I have developed a feature that allows for the implementation of a dynamic input field, which adapts its behavior and functionality based on the underlying model. This means the input field dynamically adjusts to accommodate the specific attributes, requirements, or constraints defined by the model, providing a more flexible and tailored user experience."
             />
             <FeatureCard
               Icon={Smartphone}
@@ -96,7 +96,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Bonus features */}
       <section id="testimonials" className="py-16 bg-gray-100">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-12">Bonus Features</h2>
