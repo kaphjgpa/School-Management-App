@@ -596,7 +596,7 @@ router.delete("/delete-class/:className", async (req, res) => {
   }
 });
 
-// Trying to add Class Analytics route
+// Class Analytics route
 router.get("/class-analytics", async (req, res) => {
   try {
     // Retrieve all classes from the database
@@ -620,6 +620,41 @@ router.get("/class-analytics", async (req, res) => {
   } catch (e) {
     // Error handling: log and send error response to the client
     console.error("Error fetching class analytics:", e);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+//Trying to add Male| Female data
+router.get("/gender-count", async (req, res) => {
+  try {
+    // Count students by gender using aggregation
+    const genderCounts = await Student.aggregate([
+      {
+        $group: {
+          _id: "$gender",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Initialize gender counts
+    const genderData = {
+      male: 0,
+      female: 0,
+      other: 0,
+    };
+
+    // Map the aggregation result to genderData
+    genderCounts.forEach((item) => {
+      if (item._id === "male") genderData.male = item.count;
+      if (item._id === "female") genderData.female = item.count;
+      if (item._id === "other") genderData.other = item.count;
+    });
+
+    // Send the data to the frontend
+    res.json(genderData);
+  } catch (error) {
+    console.error("Error fetching gender count:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 });
