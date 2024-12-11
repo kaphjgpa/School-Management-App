@@ -25,7 +25,7 @@ export default function ClassAnalytics() {
     const fetchClassAnalytics = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3000https://cuvette-lpcv.onrender.com/api/admin/class-analytics"
+          "https://cuvette-lpcv.onrender.com/api/admin/class-analytics"
         );
         setClasses(response.data.classObject); // Assumes the backend sends `classObject` array
       } catch (err) {

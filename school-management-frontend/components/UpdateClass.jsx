@@ -48,7 +48,7 @@ export default function UpdateClass() {
       };
 
       const response = await axios.put(
-        "http://localhost:3000https://cuvette-lpcv.onrender.com/api/admin/update-class",
+        "https://cuvette-lpcv.onrender.com/api/admin/update-class",
         formattedData,
         {
           headers: {

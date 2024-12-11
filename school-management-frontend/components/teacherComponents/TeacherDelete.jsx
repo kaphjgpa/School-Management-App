@@ -37,7 +37,7 @@ export default function TeacherDelete() {
       }
 
       const response = await axios.delete(
-        `http://localhost:3000https://cuvette-lpcv.onrender.com/api/teachers/delete-teacher/${userName}`,
+        `https://cuvette-lpcv.onrender.com/api/teachers/delete-teacher/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

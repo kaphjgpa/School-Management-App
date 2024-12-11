@@ -37,7 +37,7 @@ export const SignUp = () => {
       };
 
       const response = await axios.post(
-        `http://localhost:3000https://cuvette-lpcv.onrender.com${endpointMap[userType]}`,
+        `https://cuvette-lpcv.onrender.com${endpointMap[userType]}`,
         processedFormData
       );
 
