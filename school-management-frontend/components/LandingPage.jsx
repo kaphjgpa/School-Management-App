@@ -89,7 +89,7 @@ export default function LandingPage() {
             />
             <FeatureCard
               Icon={ChartLine}
-              title="Mobile Optimized"
+              title="Analytics"
               description="Class Analytics offers a clear view of all classes and their students, while the Financial Report summarizes earnings from student fees and expenses on teacher salaries, streamlining management and financial oversight."
             />
           </div>
