@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   OctagonMinus,
   Zap,
-  Smartphone,
+  ChartLine,
   School,
   TrendingUpDown,
   FileJson2,
@@ -88,9 +88,9 @@ export default function LandingPage() {
               description="In this application, I have developed a feature that allows for the implementation of a dynamic input field, which adapts its behavior and functionality based on the underlying model. This means the input field dynamically adjusts to accommodate the specific attributes, requirements, or constraints defined by the model, providing a more flexible and tailored user experience."
             />
             <FeatureCard
-              Icon={Smartphone}
+              Icon={ChartLine}
               title="Mobile Optimized"
-              description="Access your tasks on the go with our mobile-friendly design."
+              description="Class Analytics offers a clear view of all classes and their students, while the Financial Report summarizes earnings from student fees and expenses on teacher salaries, streamlining management and financial oversight."
             />
           </div>
         </div>
