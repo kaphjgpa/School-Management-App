@@ -624,7 +624,7 @@ router.get("/class-analytics", async (req, res) => {
   }
 });
 
-//Trying to add Male| Female data
+//Added Male| Female data
 router.get("/gender-count", async (req, res) => {
   try {
     // Count students by gender using aggregation
@@ -656,6 +656,33 @@ router.get("/gender-count", async (req, res) => {
   } catch (error) {
     console.error("Error fetching gender count:", error);
     res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+// Finances of the school
+
+router.get("/financial-data", async (req, res) => {
+  try {
+    // Fetch teacher salaries
+    const teacherSalaries = await Teacher.find(
+      {},
+      { salary: 1, teacherFirstName: 1, teacherLastName: 1 }
+    );
+
+    // Fetch student fees
+    const studentFees = await Student.find(
+      {},
+      { feesPaid: 1, studentFirstName: 1, studentLastName: 1 }
+    );
+
+    // Combine and send response
+    res.status(200).json({
+      teachers: teacherSalaries,
+      students: studentFees,
+    });
+  } catch (error) {
+    console.error("Error fetching financial data:", error);
+    res.status(500).json({ error: "Failed to fetch financial data." });
   }
 });
 
