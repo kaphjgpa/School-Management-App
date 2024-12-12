@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Home, Users, Backpack, School } from "lucide-react";
+import { Home, Users, Backpack, School, Wallet } from "lucide-react";
 import { cn } from "../src/lib/utils";
 import { Button } from "../src/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,11 @@ const sidebarItems = [
     icon: School,
     label: "Class Analytics",
     route: "/admindashboard/class-analytics",
+  },
+  {
+    icon: Wallet,
+    label: "Finance Analytics",
+    route: "/admindashboard/finance-analytics",
   },
 ];
 export function AdminSidebar() {

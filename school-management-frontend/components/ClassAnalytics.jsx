@@ -53,7 +53,7 @@ export default function ClassAnalytics() {
   }
 
   return (
-    <div className="h-screen w-screen mx-auto p-4 ">
+    <div className="h-screen w-screen mx-auto p-4 bg-gray-100 ">
       <Link to={"/admindashboard"}>
         <ChevronLeft className="text-black mb-4" />
       </Link>
@@ -146,7 +146,7 @@ export default function ClassAnalytics() {
           </Card>
         ))}
       </div>
-      <div className=" mt-10 ml-4 align-center justify-center border-black  ">
+      <div className=" mt-10 ml-4 align-center justify-cente">
         <h2 className="text-3xl font-bold mb-6">
           Gender Distribution in School
         </h2>

@@ -12,6 +12,7 @@ import StudentDashboard from "../components/studentComponents/StudentDashboard";
 import { Helmet } from "react-helmet";
 import NotFound from "../components/NotFound";
 import ClassAnalytics from "../components/ClassAnalytics";
+import FinanceDashboard from "../components/FinanceDashboard";
 
 function App() {
   const router = createBrowserRouter([
@@ -100,6 +101,16 @@ function App() {
         <>
           <ProtectedRoute>
             <ClassAnalytics />
+          </ProtectedRoute>
+        </>
+      ),
+    },
+    {
+      path: "/admindashboard/finance-analytics",
+      element: (
+        <>
+          <ProtectedRoute>
+            <FinanceDashboard />
           </ProtectedRoute>
         </>
       ),

@@ -28,9 +28,9 @@ const FeatureCard = ({ Icon, title, description }) => (
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col w-screen h-screen bg-white">
+    <div className="flex flex-col w-screen h-full bg-white">
       {/* Header */}
-      <header className="w-screen px-6 py-4 flex items-center justify-between border-b">
+      <header className="px-6 py-4 flex items-center justify-between border-b">
         <div className="flex items-center gap-2">
           <School className="h-6 w-6 text-primary" />
           <h1 className="text-lg font-bold">School Management App</h1>
@@ -97,7 +97,7 @@ export default function LandingPage() {
       </section>
 
       {/* Bonus features */}
-      <section id="testimonials" className="py-16 bg-gray-100">
+      <section id="testimonials" className="pt-16 bg-gray-100">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-12">Bonus Features</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

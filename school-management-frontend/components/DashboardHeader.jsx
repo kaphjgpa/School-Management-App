@@ -13,7 +13,7 @@ export function DashboardHeader() {
     window.location.href = "/signin";
   };
   return (
-    <header className="flex items-center justify-between px-6 py-4 bg-white dark:bg-gray-800 shadow">
+    <header className="flex items-center justify-between px-6 py-4 bg-gray-100 dark:bg-gray-800 shadow">
       <div className="flex items-center"></div>
       <div className="flex items-center">
         <DropdownMenu>
