@@ -16,7 +16,7 @@ export function GenderCount() {
     female: 0,
     other: 0,
   });
-
+  // Fetching data from the backend server
   useEffect(() => {
     // Make API request to fetch gender counts from the backend
     const fetchGenderData = async () => {

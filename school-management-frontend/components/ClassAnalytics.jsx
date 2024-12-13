@@ -116,13 +116,15 @@ export default function ClassAnalytics() {
                   {openDropdown[classItem._id] && (
                     <TableRow>
                       <TableCell colSpan={2}>
-                        <ul className="list-disc pl-6">
-                          {classItem.studentList.map((student, index) => (
-                            <li key={index} className="text-sm">
-                              {student}{" "}
-                            </li>
-                          ))}
-                        </ul>
+                        <div className="max-h-10 overflow-y-auto">
+                          <ul className="list-disc pl-6">
+                            {classItem.studentList.map((student, index) => (
+                              <li key={index} className="text-sm">
+                                {student}{" "}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </TableCell>
                     </TableRow>
                   )}
