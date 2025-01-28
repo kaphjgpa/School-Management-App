@@ -37,7 +37,7 @@ export const SignUp = () => {
       };
 
       const response = await axios.post(
-        `https://cuvette-lpcv.onrender.com${endpointMap[userType]}`,
+        `https://school-management-app-lkep.onrender.com${endpointMap[userType]}`,
         processedFormData
       );
 

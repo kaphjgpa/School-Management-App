@@ -22,7 +22,7 @@ export function GenderCount() {
     const fetchGenderData = async () => {
       try {
         const response = await axios.get(
-          "https://cuvette-lpcv.onrender.com/api/admin/gender-count"
+          "https://school-management-app-lkep.onrender.com/api/admin/gender-count"
         ); // Adjust the URL to your API endpoint
         const data = response.data;
 

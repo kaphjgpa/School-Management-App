@@ -57,7 +57,7 @@ export default function TeacherUpdate() {
           };
 
           const response = await axios.put(
-            "https://cuvette-lpcv.onrender.com/api/students/update-details",
+            "https://school-management-app-lkep.onrender.com/api/students/update-details",
             formattedData,
             {
               headers: {

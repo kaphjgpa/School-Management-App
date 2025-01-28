@@ -22,7 +22,7 @@ export default function SearchStudent() {
     setError("");
     try {
       const response = await axios.get(
-        `https://cuvette-lpcv.onrender.com/api/admin/search-student`,
+        `https://school-management-app-lkep.onrender.com/api/admin/search-student`,
         {
           params: { filter },
         }

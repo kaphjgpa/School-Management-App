@@ -28,7 +28,7 @@ export default function SearchClass() {
     setError("");
     try {
       const response = await axios.get(
-        `https://cuvette-lpcv.onrender.com/api/admin/search-class`,
+        `https://school-management-app-lkep.onrender.com/api/admin/search-class`,
         {
           params: { filter, page, limit },
         }

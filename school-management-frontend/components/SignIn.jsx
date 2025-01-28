@@ -8,9 +8,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 const roleApiEndpoints = {
-  Admin: "https://cuvette-lpcv.onrender.com/api/admin/signin",
-  Teacher: "https://cuvette-lpcv.onrender.com/api/teachers/signin",
-  Student: "https://cuvette-lpcv.onrender.com/api/students/signin",
+  Admin: "https://school-management-app-lkep.onrender.com/api/admin/signin",
+  Teacher:
+    "https://school-management-app-lkep.onrender.com/api/teachers/signin",
+  Student:
+    "https://school-management-app-lkep.onrender.com/api/students/signin",
 };
 
 const roleRedirectPaths = {

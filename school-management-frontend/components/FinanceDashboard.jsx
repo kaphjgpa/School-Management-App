@@ -11,7 +11,7 @@ export default function FinanceDashboard() {
     const fetchFinancialData = async () => {
       try {
         const response = await fetch(
-          "https://cuvette-lpcv.onrender.com/api/admin/financial-data"
+          "https://school-management-app-lkep.onrender.com/api/admin/financial-data"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch financial data");
