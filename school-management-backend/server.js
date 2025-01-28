@@ -22,7 +22,7 @@ app.use(express.json());
 // Enable CORS
 app.use(
   cors({
-    origin: ["https://cuvette-xi.vercel.app", "http://localhost:5173"],
+    origin: "https://cuvette-xi.vercel.app",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -46,5 +46,5 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
