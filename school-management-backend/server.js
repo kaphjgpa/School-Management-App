@@ -22,7 +22,7 @@ app.use(express.json());
 // Enable CORS
 app.use(
   cors({
-    origin: "https://cuvette-xi.vercel.app",
+    origin: ["https://cuvette-xi.vercel.app", "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
