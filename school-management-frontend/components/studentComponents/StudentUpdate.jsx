@@ -57,7 +57,7 @@ export default function TeacherUpdate() {
           };
 
           const response = await axios.put(
-            "https://school-management-app-lkep.onrender.com/api/students/update-details",
+            "http://localhost:8000/api/students/update-details",
             formattedData,
             {
               headers: {

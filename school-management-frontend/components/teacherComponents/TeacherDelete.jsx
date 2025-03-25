@@ -37,7 +37,7 @@ export default function TeacherDelete() {
       }
 
       const response = await axios.delete(
-        `https://school-management-app-lkep.onrender.com/api/teachers/delete-teacher/${userName}`,
+        `http://localhost:8000/api/teachers/delete-teacher/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

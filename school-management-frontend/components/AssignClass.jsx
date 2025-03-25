@@ -43,7 +43,7 @@ export default function AdminUpdateDialog() {
       }
 
       const response = await axios.put(
-        "https://school-management-app-lkep.onrender.com/api/admin/assign-class",
+        "http://localhost:8000/api/admin/assign-class",
         { teacherFirstName, assignedClass },
         {
           headers: {

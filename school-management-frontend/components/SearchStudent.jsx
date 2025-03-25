@@ -25,7 +25,7 @@ export default function SearchStudent() {
     setError("");
     try {
       const response = await axios.get(
-        `https://school-management-app-lkep.onrender.com/api/admin/search-student`,
+        `http://localhost:8000/api/admin/search-student`,
         {
           params: { filter },
         }

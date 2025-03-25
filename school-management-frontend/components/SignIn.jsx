@@ -8,11 +8,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
 const roleApiEndpoints = {
-  Admin: "https://school-management-app-lkep.onrender.com/api/admin/signin",
-  Teacher:
-    "https://school-management-app-lkep.onrender.com/api/teachers/signin",
-  Student:
-    "https://school-management-app-lkep.onrender.com/api/students/signin",
+  Admin: "http://localhost:8000/api/admin/signin",
+  Teacher: "http://localhost:8000/api/teachers/signin",
+  Student: "http://localhost:8000/api/students/signin",
 };
 
 const roleRedirectPaths = {

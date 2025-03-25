@@ -37,7 +37,7 @@ export const SignUp = () => {
       };
 
       const response = await axios.post(
-        `https://school-management-app-lkep.onrender.com${endpointMap[userType]}`,
+        `http://localhost:8000${endpointMap[userType]}`,
         processedFormData
       );
 

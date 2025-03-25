@@ -38,7 +38,7 @@ export default function StudentDelete() {
       }
 
       const response = await axios.delete(
-        `https://school-management-app-lkep.onrender.com/api/students/delete-student/${userName}`,
+        `http://localhost:8000/api/students/delete-student/${userName}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

@@ -50,7 +50,7 @@ export default function AdminUpdateDialog() {
           }
 
           const response = await axios.put(
-            "https://school-management-app-lkep.onrender.com/api/admin/update-details",
+            "http://localhost:8000/api/admin/update-details",
             { userName, contactNumber, password, lastName },
             {
               headers: {

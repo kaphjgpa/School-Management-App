@@ -28,7 +28,7 @@ export default function SearchClass() {
     setError("");
     try {
       const response = await axios.get(
-        `https://school-management-app-lkep.onrender.com/api/admin/search-class`,
+        `http://localhost:8000/api/admin/search-class`,
         {
           params: { filter, page, limit },
         }

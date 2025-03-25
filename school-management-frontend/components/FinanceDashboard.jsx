@@ -11,7 +11,7 @@ export default function FinanceDashboard() {
     const fetchFinancialData = async () => {
       try {
         const response = await fetch(
-          "https://school-management-app-lkep.onrender.com/api/admin/financial-data"
+          "http://localhost:8000/api/admin/financial-data"
         );
         if (!response.ok) {
           throw new Error("Failed to fetch financial data");

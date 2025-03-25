@@ -48,7 +48,7 @@ export default function UpdateClass() {
       };
 
       const response = await axios.put(
-        "https://school-management-app-lkep.onrender.com/api/admin/update-class",
+        "http://localhost:8000/api/admin/update-class",
         formattedData,
         {
           headers: {
